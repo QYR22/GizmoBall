@@ -92,9 +92,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> leftFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.x / 2.0, -preferredSize.y / 4.0 / 2.0),
-                new Vector2(preferredSize.x / 2.0, -preferredSize.y / 4.0 / 2.0),
-                new Vector2(-preferredSize.x / 2.0, preferredSize.y / 4.0 / 2.0)
+                new Vector2(-preferredSize.x, -preferredSize.y/2.0),
+                new Vector2(preferredSize.x , -preferredSize.y/2.0),
+                new Vector2(-preferredSize.x, preferredSize.y  / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.LEFT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);
@@ -107,9 +107,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> rightFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.y / 2.0, -preferredSize.y / 4.0 / 2.0),
-                new Vector2(preferredSize.x / 2.0, -preferredSize.y / 4.0 / 2.0),
-                new Vector2(preferredSize.y / 2.0, preferredSize.y / 4.0 / 2.0)
+                new Vector2(-preferredSize.x , -preferredSize.y  / 2.0),
+                new Vector2(preferredSize.x , -preferredSize.y / 2.0),
+                new Vector2(preferredSize.x, preferredSize.y  / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.RIGHT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);

@@ -8,43 +8,31 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pipe extends Rectangle {
-
-    private PipeDirection pipeDirection;
-
-    /**
-     * 反序列化用
-     */
-    @Deprecated
-    public Pipe() {
-        this(0, 0);
+    /*無位移旋轉*/
+    public Pipe(double midWidth,double midHeight) {
+        super(midWidth,midHeight);
+        this.pipeDirection=PipeDirection.TRANSVERSE;
     }
+    /*有位移旋轉*/
+    public Pipe(double midWidth,double midHeight,Transform transform){
+        super(midWidth,midHeight,transform);
+        this.pipeDirection=PipeDirection.TRANSVERSE;
 
-    public Pipe(double halfWidth, double halfHeight, Transform transform) {
-        super(halfWidth, halfHeight, transform);
-        this.pipeDirection = PipeDirection.TRANSVERSE;
     }
-
-    public Pipe(double halfWidth, double halfHeight) {
-        super(halfWidth, halfHeight);
-        this.pipeDirection = PipeDirection.TRANSVERSE;
-    }
-
     public enum PipeDirection {
-        TRANSVERSE,
-
-        VERTICAL
+        TRANSVERSE,VERTICAL
     }
-
+    private PipeDirection pipeDirection;
+    @Deprecated
+    public Pipe(){this(0,0);}
     @Override
-    public void rotate(double theta, double x, double y) {
-        transform.rotate(theta, x, y);
-        if (Math.abs(this.getTransform().sint) > 0.5) {
-            this.pipeDirection = PipeDirection.VERTICAL;
-
-        } else {
-            this.pipeDirection = PipeDirection.TRANSVERSE;
+    public void rotate(double beta,double x,double y){
+        transform.rotate(beta,x,y);
+        if(Math.abs(this.getTransform().sint)>1/2){
+            this.pipeDirection=PipeDirection.VERTICAL;
+        }
+        else{
+            this.pipeDirection=PipeDirection.TRANSVERSE;
         }
     }
-
-
 }
