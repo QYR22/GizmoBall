@@ -1,7 +1,7 @@
 package gizmoball.ui.component;
 
+/* 操作方法 */
 public enum GizmoCommand {
-
     ADD,
     REMOVE,
     MOVE_UP,
