@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 import static gizmoball.game.GizmoSettings.BLACK_HOLE_BIAS;
 
-
+/* 所有可拖动组件：球ball、黑洞blackhole、管道pipe、三角形triangle */
 @Getter
 @Setter
 public class DraggableGizmoComponent extends ImageLabelComponent {
@@ -56,7 +56,7 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
         gizmoPhysicsBody.setRestitutionVelocity(10);
         return gizmoPhysicsBody;
     };
-
+    /* 管道内无摩擦 */
     protected static final Function<Vector2, GizmoPhysicsBody> pipeBodyCreator = (preferredSize) -> {
         Pipe pipe = new Pipe(preferredSize.x / 2.0, preferredSize.y / 2.0);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(pipe);

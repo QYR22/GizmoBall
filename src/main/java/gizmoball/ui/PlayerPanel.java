@@ -51,9 +51,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class PlayerPanel extends Application implements Initializable {
 
-    /**
-     * 渲染弹球游戏界面的canvas
-     */
+    /* 渲染弹球游戏界面的canvas */
     @FXML
     Canvas gizmoCanvas;
 
@@ -103,9 +101,7 @@ public class PlayerPanel extends Application implements Initializable {
      */
     private GridWorld world;
 
-    /**
-     * 是否处于编辑模式
-     */
+    /* true: 编辑模式  false: 设计模式 */
     private boolean inDesign = true;
 
     /**
@@ -133,6 +129,7 @@ public class PlayerPanel extends Application implements Initializable {
 
     private Runnable r;
 
+    // 可移动组件图标
     private static final DraggableGizmoComponent[] gizmos = {
             new DraggableGizmoComponent("icons/rectangle.png", "rectangle", GizmoType.RECTANGLE),
             new DraggableGizmoComponent("icons/circle.png", "circle", GizmoType.CIRCLE),
@@ -145,6 +142,7 @@ public class PlayerPanel extends Application implements Initializable {
             new DraggableGizmoComponent("icons/right_flipper.png", "right flipper", GizmoType.RIGHT_FLIPPER),
     };
 
+    // 操作组件图标
     private static final CommandComponent[] gizmoOps = {
             new CommandComponent("icons/delete.png", "delete", GizmoCommand.REMOVE),
             new CommandComponent("icons/zoom_out.png", "zoom out", GizmoCommand.ZOOM_OUT),
@@ -156,12 +154,13 @@ public class PlayerPanel extends Application implements Initializable {
             new CommandComponent("icons/move_down.png", "move down", GizmoCommand.MOVE_DOWN),
             new CommandComponent("icons/move_left.png", "move left", GizmoCommand.MOVE_LEFT),
     };
-
+    // 游戏总控图标
     private static final ImageLabelComponent[] gameOps = {
             new ImageLabelComponent("icons/play.png", "play"),
             new ImageLabelComponent("icons/design.png", "design"),
     };
 
+    // javafx启动类编写规则 重写start
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
@@ -288,9 +287,7 @@ public class PlayerPanel extends Application implements Initializable {
         drawGizmo(gizmoCanvas.getGraphicsContext2D());
     }
 
-    /**
-     * 初始化游戏操作按钮
-     */
+    /* 初始化游戏操作按钮 */
     private void initGizmoOpHBox() {
         // 初始物件操作
         initGizmoOp();
@@ -451,34 +448,34 @@ public class PlayerPanel extends Application implements Initializable {
         initCanvas();
         initMenuItem();
 
+        // 绑定
         anchorPane.setOnMouseClicked(event -> {
             gizmoCanvas.requestFocus();
         });
         anchorPane.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case LEFT:
-                    world.flipperUp(Flipper.Direction.LEFT);
+                case A:
+                    if(inDesign) bindGizmoOp(GizmoCommand.MOVE_LEFT);
+                    else world.flipperUp(Flipper.Direction.LEFT);
                     break;
                 case RIGHT:
+                case D:
                     world.flipperUp(Flipper.Direction.RIGHT);
+                    break;
+                case UP:
+                case W:
+                    bindGizmoOp(GizmoCommand.MOVE_UP);
+                    break;
+                case DOWN:
+                case S:
+                    bindGizmoOp(GizmoCommand.MOVE_DOWN);
                     break;
                 case F1:
                     isDebugMode = !isDebugMode;
                     break;
                 case DELETE:
                     bindGizmoOp(GizmoCommand.REMOVE);
-                    break;
-                case W:
-                    bindGizmoOp(GizmoCommand.MOVE_UP);
-                    break;
-                case A:
-                    bindGizmoOp(GizmoCommand.MOVE_LEFT);
-                    break;
-                case S:
-                    bindGizmoOp(GizmoCommand.MOVE_DOWN);
-                    break;
-                case D:
-                    bindGizmoOp(GizmoCommand.MOVE_RIGHT);
                     break;
                 case SHIFT:
                     bindGizmoOp(GizmoCommand.ROTATE_LEFT);
@@ -503,6 +500,12 @@ public class PlayerPanel extends Application implements Initializable {
                     break;
                 case RIGHT:
                     world.flipperDown(Flipper.Direction.RIGHT);
+                    break;
+                case A:
+                    if(!inDesign) world.flipperDown(Flipper.Direction.LEFT);
+                    break;
+                case D:
+                    if(!inDesign) world.flipperDown(Flipper.Direction.RIGHT);
                     break;
             }
         });
