@@ -9,6 +9,7 @@ import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.PhysicsBody;
 import gizmoball.game.entity.Ball;
 import gizmoball.game.entity.BlackHole;
+
 import gizmoball.ui.visualize.GizmoPhysicsBody;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
@@ -17,17 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class BlackHoleListener implements TickListener {
-
+public class BlackHoleListener implements TickListener{
     private final List<PhysicsBody> balls;
-
     private final List<PhysicsBody> blackHoles;
-
     private final List<GizmoPhysicsBody> allBodies;
-
-    /**
-     * 重写碰撞检查类
-     */
     private final BasicCollisionDetector basicCollisionDetector = new BasicCollisionDetector() {
         @Override
         public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> detect(List<PhysicsBody> bodies1, List<PhysicsBody> bodies2, List<CollisionFilter> filters) {
@@ -58,25 +52,18 @@ public class BlackHoleListener implements TickListener {
 
         }
     };
-
-    /**
-     * 黑洞和球碰撞
-     */
     @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
-        for (PhysicsBody ball : balls) {
+        for(PhysicsBody ball:balls){
             ball.getForces().clear();
         }
-        List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> detect = basicCollisionDetector.detect(balls, blackHoles, null);
-
-        for (Pair<Manifold, Pair<PhysicsBody, PhysicsBody>> pair : detect) {
-            PhysicsBody ball = pair.getValue().getKey();
+        List<Pair<Manifold,Pair<PhysicsBody,PhysicsBody>>> detect=basicCollisionDetector.detect(balls,blackHoles,null);
+        for(Pair<Manifold,Pair<PhysicsBody,PhysicsBody>> pair:detect){
+            PhysicsBody ball=pair.getValue().getKey();
             balls.remove(ball);
             allBodies.remove(ball);
         }
 
         return new ArrayList<>();
     }
-
-
 }
