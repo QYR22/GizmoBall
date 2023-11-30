@@ -1,7 +1,7 @@
 package gizmoball.engine.geometry.shape;
 
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
@@ -65,8 +65,8 @@ public class QuarterCircle extends AbstractShape {
     }
 
     @Override
-    public AABB createAABB() {
-        return new Rectangle(this.radius / 2, this.radius / 2, this.transform.copy()).createAABB();
+    public XXYY createXXYY() {
+        return new Rectangle(this.radius / 2, this.radius / 2, this.transform.copy()).createXXYY();
     }
 
     @Override

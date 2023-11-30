@@ -2,7 +2,7 @@ package gizmoball.ui;
 
 import gizmoball.engine.AbstractWorld;
 import gizmoball.engine.Settings;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.geometry.shape.AbstractShape;
@@ -476,9 +476,9 @@ public class PlayerPanel extends Application implements Initializable {
         anchorPane.setOnScroll(event -> {
             double deltaY = event.getDeltaY();
             if (deltaY > 0) {
-                bindGizmoOp(GizmoCommand.ZOOM_OUT);
-            } else if (deltaY < 0) {
                 bindGizmoOp(GizmoCommand.ZOOM_IN);
+            } else if (deltaY < 0) {
+                bindGizmoOp(GizmoCommand.ZOOM_OUT);
             }
         });
     }
@@ -491,12 +491,12 @@ public class PlayerPanel extends Application implements Initializable {
             gizmoOutlineRectangle.setVisible(false);
             return;
         }
-        AABB aabb = selectedBody.getShape().createAABB();
-        GeometryUtil.padToSquare(aabb);
-        gizmoOutlineRectangle.setX(aabb.minX);
-        gizmoOutlineRectangle.setY(world.boundaryAABB.maxY - aabb.maxY);
-        gizmoOutlineRectangle.setWidth(aabb.maxX - aabb.minX);
-        gizmoOutlineRectangle.setHeight(aabb.maxY - aabb.minY);
+        XXYY xxyy = selectedBody.getShape().createXXYY();
+        GeometryUtil.padToSquare(xxyy);
+        gizmoOutlineRectangle.setX(xxyy.minX);
+        gizmoOutlineRectangle.setY(world.boundaryXXYY.maxY - xxyy.maxY);
+        gizmoOutlineRectangle.setWidth(xxyy.maxX - xxyy.minX);
+        gizmoOutlineRectangle.setHeight(xxyy.maxY - xxyy.minY);
         gizmoOutlineRectangle.setVisible(true);
     }
 
@@ -517,7 +517,7 @@ public class PlayerPanel extends Application implements Initializable {
             target.requestFocus();
             if (event.getButton() == MouseButton.PRIMARY) {
                 double x = event.getX();
-                double y = world.boundaryAABB.maxY - event.getY();
+                double y = world.boundaryXXYY.maxY - event.getY();
                 // 获取当前index
                 int[] index = world.getGridIndex(x, y);
                 if (index != null) {
@@ -566,16 +566,16 @@ public class PlayerPanel extends Application implements Initializable {
             DraggableGizmoComponent gizmo = gizmos[gizmoIndex];
 
             int gridSize = world.getGridSize();
-            Vector2 transformedCenter = new Vector2(event.getX(), world.boundaryAABB.maxY - event.getY());
-            // 以鼠标所在的点创建一个格子大小的AABB
-            AABB centerAABB = new AABB(-gridSize / 2.0, -gridSize / 2.0, gridSize / 2.0, gridSize / 2.0);
-            centerAABB.translate(transformedCenter);
+            Vector2 transformedCenter = new Vector2(event.getX(), world.boundaryXXYY.maxY - event.getY());
+            // 以鼠标所在的点创建一个格子大小的XXYY
+            XXYY centerXXYY = new XXYY(-gridSize / 2.0, -gridSize / 2.0, gridSize / 2.0, gridSize / 2.0);
+            centerXXYY.translate(transformedCenter);
             // 移到边界内
-            Vector2 offsetToBoundary = GeometryUtil.offsetToBoundary(centerAABB, world.boundaryAABB);
+            Vector2 offsetToBoundary = GeometryUtil.offsetToBoundary(centerXXYY, world.boundaryXXYY);
             transformedCenter.add(offsetToBoundary);
-            centerAABB.translate(offsetToBoundary);
+            centerXXYY.translate(offsetToBoundary);
             // 对齐到网格
-            Vector2 snapped = GeometryUtil.snapToGrid(centerAABB, gridSize, gridSize);
+            Vector2 snapped = GeometryUtil.snapToGrid(centerXXYY, gridSize, gridSize);
             transformedCenter.add(snapped);
             GizmoPhysicsBody pb = gizmo.createPhysicsBody(preferredSize, transformedCenter);
             try {

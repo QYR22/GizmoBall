@@ -1,7 +1,7 @@
 package gizmoball.engine.geometry.shape;
 
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
@@ -42,8 +42,8 @@ public class Circle extends AbstractShape {
     }
 
     @Override
-    public AABB createAABB() {
-        return new AABB(transform.getX() - radius,
+    public XXYY createXXYY() {
+        return new XXYY(transform.getX() - radius,
                 transform.getY() - radius,
                 transform.getX() + radius,
                 transform.getY() + radius);

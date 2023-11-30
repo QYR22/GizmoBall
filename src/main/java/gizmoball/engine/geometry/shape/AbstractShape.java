@@ -3,7 +3,7 @@ package gizmoball.engine.geometry.shape;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
@@ -45,11 +45,11 @@ public abstract class AbstractShape implements Convex {
     public abstract void zoom(int rate);
 
     /**
-     * 返回对应图形的AABB
+     * 返回对应图形的XXYY
      *
-     * @return AABB
+     * @return XXYY
      */
-    public abstract AABB createAABB();
+    public abstract XXYY createXXYY();
 
     /**
      * 返回投影到指定分离轴后的{@link Interval}

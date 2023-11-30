@@ -53,7 +53,7 @@ public class BasicCollisionDetector implements CollisionDetector {
         for (CollisionFilter filter : filters) {
             if (!filter.isAllowedBroadPhase(body1, body2)) return null;
         }
-        if (!DetectorUtil.AABBDetect(shape1, shape2)) {
+        if (!DetectorUtil.XXYYDetect(shape1, shape2)) {
             return null;
         }
         // NarrowPhase

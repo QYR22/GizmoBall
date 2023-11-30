@@ -1,6 +1,6 @@
 package gizmoball.ui;
 
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.geometry.shape.Rectangle;
 import gizmoball.engine.physics.Mass;
@@ -26,8 +26,8 @@ import static gizmoball.game.GizmoSettings.BOUNDARY_BUFFER;
 @Slf4j
 public class GridWorld extends GizmoWorld {
 
-    /* 网格边界AABB */
-    protected AABB boundaryAABB;
+    /* 网格边界XXYY */
+    protected XXYY boundaryXXYY;
 
     /* 每个网格中对应的PhysicsBody 一个PhysicsBody e.g.triangle三角、圆、方形、占满完整的一格 */
     protected GizmoPhysicsBody[][] gizmoGridBodies;
@@ -45,7 +45,7 @@ public class GridWorld extends GizmoWorld {
     public GridWorld(Vector2 gravity, int width, int height, int gridSize) {
         super(gravity);
         this.gridSize = gridSize;
-        boundaryAABB = new AABB(0, 0, width, height);
+        boundaryXXYY = new XXYY(0, 0, width, height);
         gizmoGridBodies = new GizmoPhysicsBody[(int) (width / gridSize)][(int) (height / gridSize)];
         initBoundary();
     }
@@ -58,8 +58,8 @@ public class GridWorld extends GizmoWorld {
     public int[] getGridIndex(double x, double y) {
         x = Precision.round(x, 10);
         y = Precision.round(y, 10);
-        if (x < boundaryAABB.minX || x > boundaryAABB.maxX
-                || y < boundaryAABB.minY || y > boundaryAABB.maxY) {
+        if (x < boundaryXXYY.minX || x > boundaryXXYY.maxX
+                || y < boundaryXXYY.minY || y > boundaryXXYY.maxY) {
             return null;
         }
         int[] index = new int[2];
@@ -72,10 +72,10 @@ public class GridWorld extends GizmoWorld {
         return getGridIndex(position.x, position.y);
     }
 
-    public void setGrid(AABB aabb, GizmoPhysicsBody body) {
-        int[] bottomLeft = getGridIndex(aabb.getMinX(), aabb.getMinY());
-        int width = (int) Math.ceil((aabb.getMaxX() - aabb.getMinX()) / gridSize);
-        int height = (int) Math.ceil((aabb.getMaxY() - aabb.getMinY()) / gridSize);
+    public void setGrid(XXYY xxyy, GizmoPhysicsBody body) {
+        int[] bottomLeft = getGridIndex(xxyy.getMinX(), xxyy.getMinY());
+        int width = (int) Math.ceil((xxyy.getMaxX() - xxyy.getMinX()) / gridSize);
+        int height = (int) Math.ceil((xxyy.getMaxY() - xxyy.getMinY()) / gridSize);
 
         for (int i = bottomLeft[0]; i < bottomLeft[0] + width; i++) {
             for (int j = bottomLeft[1]; j < bottomLeft[1] + height; j++) {
@@ -85,23 +85,23 @@ public class GridWorld extends GizmoWorld {
     }
 
     /**
-     * <p>检查AABB所在范围的格子是否已经有物体</p>
+     * <p>检查XXYY所在范围的格子是否已经有物体</p>
      * <p>同时会检查是否越界</p>
      *
-     * @param aabb /
+     * @param xxyy /
      * @return /
      */
-    public boolean checkOverlay(AABB aabb, PhysicsBody body) {
-        int[] bottomLeft = getGridIndex(aabb.getMinX(), aabb.getMinY());
+    public boolean checkOverlay(XXYY xxyy, PhysicsBody body) {
+        int[] bottomLeft = getGridIndex(xxyy.getMinX(), xxyy.getMinY());
         if (bottomLeft == null) {
             return true;
         }
-        int[] topRight = getGridIndex(aabb.getMaxX(), aabb.getMaxY());
+        int[] topRight = getGridIndex(xxyy.getMaxX(), xxyy.getMaxY());
         if (topRight == null) {
             return true;
         }
-        int width = (int) Math.ceil((aabb.getMaxX() - aabb.getMinX()) / gridSize);
-        int height = (int) Math.ceil((aabb.getMaxY() - aabb.getMinY()) / gridSize);
+        int width = (int) Math.ceil((xxyy.getMaxX() - xxyy.getMinX()) / gridSize);
+        int height = (int) Math.ceil((xxyy.getMaxY() - xxyy.getMinY()) / gridSize);
 
         for (int i = bottomLeft[0]; i < bottomLeft[0] + width; i++) {
             for (int j = bottomLeft[1]; j < bottomLeft[1] + height; j++) {
@@ -114,8 +114,8 @@ public class GridWorld extends GizmoWorld {
     }
 
     public void initBoundary() {
-        double worldWidth = boundaryAABB.maxX;
-        double worldHeight = boundaryAABB.maxY;
+        double worldWidth = boundaryXXYY.maxX;
+        double worldHeight = boundaryXXYY.maxY;
         // init border
         // bottom
         createBoundary(worldWidth / 2 + BOUNDARY_BUFFER, worldHeight / 2, worldWidth / 2, -worldHeight / 2);
@@ -148,14 +148,14 @@ public class GridWorld extends GizmoWorld {
 
     @Override
     public void addBody(GizmoPhysicsBody body) {
-        AABB aabb = body.getShape().createAABB();
-        GeometryUtil.padToSquare(aabb);
-        if (checkOverlay(aabb, body)) {
+        XXYY xxyy = body.getShape().createXXYY();
+        GeometryUtil.padToSquare(xxyy);
+        if (checkOverlay(xxyy, body)) {
             throw new IllegalArgumentException("物件重叠");
         }
 
         super.addBody(body);
-        setGrid(aabb, body);
+        setGrid(xxyy, body);
     }
 
     @Override

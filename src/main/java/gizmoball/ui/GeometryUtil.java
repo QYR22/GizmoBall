@@ -1,44 +1,44 @@
 package gizmoball.ui;
 
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Vector2;
 
 public class GeometryUtil {
 
     /**
-     * 计算AABB到边界的偏移，返回能将AABB移动到边界内的最小向量
+     * 计算XXYY到边界的偏移，返回能将XXYY移动到边界内的最小向量
      *
-     * @param aabb     目标aabb
+     * @param xxyy     目标xxyy
      * @param boundary 边界
-     * @return 返回能将AABB移动到边界内的最小向量
+     * @return 返回能将XXYY移动到边界内的最小向量
      */
-    public static Vector2 offsetToBoundary(AABB aabb, AABB boundary) {
+    public static Vector2 offsetToBoundary(XXYY xxyy, XXYY boundary) {
         double offsetX = 0;
         double offsetY = 0;
-        if (aabb.minX < boundary.minX) {
-            offsetX = -aabb.minX;
-        } else if (aabb.maxX > boundary.maxX) {
-            offsetX = boundary.maxX - aabb.maxX;
+        if (xxyy.minX < boundary.minX) {
+            offsetX = -xxyy.minX;
+        } else if (xxyy.maxX > boundary.maxX) {
+            offsetX = boundary.maxX - xxyy.maxX;
         }
-        if (aabb.minY < boundary.minY) {
-            offsetY = -aabb.minY;
-        } else if (aabb.maxY > boundary.maxY) {
-            offsetY = boundary.maxY - aabb.maxY;
+        if (xxyy.minY < boundary.minY) {
+            offsetY = -xxyy.minY;
+        } else if (xxyy.maxY > boundary.maxY) {
+            offsetY = boundary.maxY - xxyy.maxY;
         }
         return new Vector2(offsetX, offsetY);
     }
 
     /**
-     * 计算AABB对齐到网格的偏移，返回能将AABB对齐到网格的最小向量
+     * 计算XXYY对齐到网格的偏移，返回能将XXYY对齐到网格的最小向量
      *
-     * @param aabb       目标aabb
+     * @param xxyy       目标xxyy
      * @param gridWidth  网格宽度
      * @param gridHeight 网格高度
      * @return 到对其网格需要应用的偏移
      */
-    public static Vector2 snapToGrid(AABB aabb, int gridWidth, int gridHeight) {
+    public static Vector2 snapToGrid(XXYY xxyy, int gridWidth, int gridHeight) {
         // 以左下角对齐
-        return snapToGrid(new Vector2(aabb.minX, aabb.minY), gridWidth, gridHeight);
+        return snapToGrid(new Vector2(xxyy.minX, xxyy.minY), gridWidth, gridHeight);
     }
 
     /**
@@ -60,20 +60,20 @@ public class GeometryUtil {
     }
 
     /**
-     * 将AABB补成一个正方形
+     * 将XXYY补成一个正方形
      *
-     * @param aabb /
+     * @param xxyy /
      */
-    public static void padToSquare(AABB aabb) {
-        double width = aabb.maxX - aabb.minX;
-        double height = aabb.maxY - aabb.minY;
+    public static void padToSquare(XXYY xxyy) {
+        double width = xxyy.maxX - xxyy.minX;
+        double height = xxyy.maxY - xxyy.minY;
         double delta = Math.abs(width - height);
         if (width > height) {
-            aabb.minY -= delta / 2.0;
-            aabb.maxY += delta / 2.0;
+            xxyy.minY -= delta / 2.0;
+            xxyy.maxY += delta / 2.0;
         } else {
-            aabb.minX -= delta / 2.0;
-            aabb.maxX += delta / 2.0;
+            xxyy.minX -= delta / 2.0;
+            xxyy.maxX += delta / 2.0;
         }
     }
 }

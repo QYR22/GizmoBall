@@ -2,7 +2,7 @@ package gizmoball.engine.collision.detector;
 
 import gizmoball.engine.collision.Interval;
 import gizmoball.engine.collision.Penetration;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.geometry.shape.*;
@@ -14,15 +14,15 @@ public class DetectorUtil {
 
     /**
      * <p>使用于broadPhase</p>
-     * 判断两个{@link AbstractShape}的AABB是否发生碰撞
+     * 判断两个{@link AbstractShape}的XXYY是否发生碰撞
      *
      * @param shape1 待测图形
      * @param shape2 待测图形
      * @return boolean
      */
-    public static boolean AABBDetect(AbstractShape shape1, AbstractShape shape2) {
-        AABB a = shape1.createAABB();
-        AABB b = shape2.createAABB();
+    public static boolean XXYYDetect(AbstractShape shape1, AbstractShape shape2) {
+        XXYY a = shape1.createXXYY();
+        XXYY b = shape2.createXXYY();
         return a.overlaps(b);
     }
 

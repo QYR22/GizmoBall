@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AABB {
+public class XXYY {
 
     public double minX;
 
@@ -17,24 +17,24 @@ public class AABB {
 
     public double maxY;
 
-    public AABB(AABB aabb) {
-        this.minX = aabb.minX;
-        this.minY = aabb.minY;
-        this.maxX = aabb.maxX;
-        this.maxY = aabb.maxY;
+    public XXYY(XXYY xxyy) {
+        this.minX = xxyy.minX;
+        this.minY = xxyy.minY;
+        this.maxX = xxyy.maxX;
+        this.maxY = xxyy.maxY;
     }
 
     /**
-     * 判断AABB是否重叠
+     * 判断XXYY是否重叠
      *
-     * @param aabb AABB
+     * @param xxyy XXYY
      * @return boolean
      */
-    public boolean overlaps(AABB aabb) {
-        return this.minX <= aabb.maxX &&
-                this.maxX >= aabb.minX &&
-                this.minY <= aabb.maxY &&
-                this.maxY >= aabb.minY;
+    public boolean overlaps(XXYY xxyy) {
+        return this.minX <= xxyy.maxX &&
+                this.maxX >= xxyy.minX &&
+                this.minY <= xxyy.maxY &&
+                this.maxY >= xxyy.minY;
     }
 
     /**

@@ -1,6 +1,6 @@
 package gizmoball.ui.visualize;
 
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.shape.AbstractShape;
 import gizmoball.engine.physics.PhysicsBody;
@@ -23,9 +23,9 @@ public class SVGRenderer implements CanvasRenderer {
         AbstractShape shape = body.getShape();
         Transform transform = shape.getTransform();
 
-        AABB aabb = body.getShape().createAABB();
-        double shapeHeight = aabb.maxY - aabb.minY;
-        double shapeWidth = aabb.maxX - aabb.minX;
+        XXYY xxyy = body.getShape().createXXYY();
+        double shapeHeight = xxyy.maxY - xxyy.minY;
+        double shapeWidth = xxyy.maxX - xxyy.minX;
 
         if (svgNode != null) {
             gc.save();
