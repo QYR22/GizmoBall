@@ -117,33 +117,33 @@ public class PlayerPanel extends Application implements Initializable {
 
     // 可移动组件图标
     private static final DraggableGizmoComponent[] gizmos = {
-            new DraggableGizmoComponent("icons/rectangle.png", "rectangle", GizmoType.RECTANGLE),
-            new DraggableGizmoComponent("icons/circle.png", "circle", GizmoType.CIRCLE),
-            new DraggableGizmoComponent("icons/triangle.png", "triangle", GizmoType.TRIANGLE),
-            new DraggableGizmoComponent("icons/black_hole.png", "black hole", GizmoType.BLACK_HOLE),
-            new DraggableGizmoComponent("icons/ball.png", "ball", GizmoType.BALL),
-            new DraggableGizmoComponent("icons/pipe.png", "pipe", GizmoType.PIPE),
-            new DraggableGizmoComponent("icons/curved_pipe.png", "curved pipe", GizmoType.CURVED_PIPE),
-            new DraggableGizmoComponent("icons/left_flipper.png", "left flipper", GizmoType.LEFT_FLIPPER),
-            new DraggableGizmoComponent("icons/right_flipper.png", "right flipper", GizmoType.RIGHT_FLIPPER),
+            new DraggableGizmoComponent("icons/rectangle.png", "矩形", GizmoType.RECTANGLE),
+            new DraggableGizmoComponent("icons/circle.png", "圆", GizmoType.CIRCLE),
+            new DraggableGizmoComponent("icons/triangle.png", "三角形", GizmoType.TRIANGLE),
+            new DraggableGizmoComponent("icons/black_hole.png", "黑洞", GizmoType.BLACK_HOLE),
+            new DraggableGizmoComponent("icons/ball.png", "球", GizmoType.BALL),
+            new DraggableGizmoComponent("icons/pipe.png", "管道", GizmoType.PIPE),
+            new DraggableGizmoComponent("icons/curved_pipe.png", "弯道", GizmoType.CURVED_PIPE),
+            new DraggableGizmoComponent("icons/left_flipper.png", "左挡板", GizmoType.LEFT_FLIPPER),
+            new DraggableGizmoComponent("icons/right_flipper.png", "右挡板", GizmoType.RIGHT_FLIPPER),
     };
 
     // 操作组件图标
     private static final CommandComponent[] gizmoOps = {
-            new CommandComponent("icons/delete.png", "delete", GizmoCommand.REMOVE),
-            new CommandComponent("icons/zoom_out.png", "zoom out", GizmoCommand.ZOOM_OUT),
-            new CommandComponent("icons/zoom_in.png", "zoom in", GizmoCommand.ZOOM_IN),
-            new CommandComponent("icons/rotate_right.png", "rotate right", GizmoCommand.ROTATE_RIGHT),
+            new CommandComponent("icons/delete.png", "删除", GizmoCommand.REMOVE),
+            new CommandComponent("icons/zoom_out.png", "缩小", GizmoCommand.ZOOM_OUT),
+            new CommandComponent("icons/zoom_in.png", "放大", GizmoCommand.ZOOM_IN),
+            new CommandComponent("icons/rotate_right.png", "右旋", GizmoCommand.ROTATE_RIGHT),
 
-            new CommandComponent("icons/move_up.png", "move up", GizmoCommand.MOVE_UP),
-            new CommandComponent("icons/move_right.png", "move right", GizmoCommand.MOVE_RIGHT),
-            new CommandComponent("icons/move_down.png", "move down", GizmoCommand.MOVE_DOWN),
-            new CommandComponent("icons/move_left.png", "move left", GizmoCommand.MOVE_LEFT),
+            new CommandComponent("icons/move_up.png", "上移", GizmoCommand.MOVE_UP),
+            new CommandComponent("icons/move_right.png", "右移", GizmoCommand.MOVE_RIGHT),
+            new CommandComponent("icons/move_down.png", "下移", GizmoCommand.MOVE_DOWN),
+            new CommandComponent("icons/move_left.png", "左移", GizmoCommand.MOVE_LEFT),
     };
     // 游戏总控图标
     private static final ImageLabelComponent[] gameOps = {
-            new ImageLabelComponent("icons/play.png", "play"),
-            new ImageLabelComponent("icons/design.png", "design"),
+            new ImageLabelComponent("icons/play.png", "开始游戏"),
+            new ImageLabelComponent("icons/design.png", "设计模式"),
     };
 
     // javafx启动类编写规则 重写start
