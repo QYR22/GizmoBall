@@ -17,13 +17,24 @@ import java.util.List;
 
 @AllArgsConstructor
 public class BallListener implements TickListener {
-
     private final List<PhysicsBody> balls;
+    private final BasicCollisionDetector basicCollisionDetector=new BasicCollisionDetector(){
+        private Manifold processDetect(ManifoldSolver manifoldSolver, Ball ball1, Ball ball2) {
+            if (!DetectorUtil.AABBDetect(ball1, ball2)) {
+                return null;
+            }
 
-    /**
-     * 重写碰撞检查类
-     */
-    private final BasicCollisionDetector basicCollisionDetector = new BasicCollisionDetector() {
+            Penetration penetration = new Penetration();
+            DetectorResult detect = DetectorUtil.circleDetect(ball1, ball2, null, penetration);
+            if (!detect.isHasCollision()) {
+                return null;
+            }
+            Manifold manifold = new Manifold();
+            if (!manifoldSolver.getManifold(penetration, ball1, ball2, detect.getApproximateShape(), manifold)) {
+                return null;
+            }
+            return manifold;
+        }
         @Override
         public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> detect(List<PhysicsBody> bodies1, List<PhysicsBody> bodies2, List<CollisionFilter> listeners) {
             List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> manifolds = new ArrayList<>();
@@ -43,27 +54,10 @@ public class BallListener implements TickListener {
             }
             return manifolds;
         }
-
-        private Manifold processDetect(ManifoldSolver manifoldSolver, Ball ball1, Ball ball2) {
-            if (!DetectorUtil.AABBDetect(ball1, ball2)) {
-                return null;
-            }
-
-            Penetration penetration = new Penetration();
-            DetectorResult detect = DetectorUtil.circleDetect(ball1, ball2, null, penetration);
-            if (!detect.isHasCollision()) {
-                return null;
-            }
-            Manifold manifold = new Manifold();
-            if (!manifoldSolver.getManifold(penetration, ball1, ball2, detect.getApproximateShape(), manifold)) {
-                return null;
-            }
-            return manifold;
-        }
     };
-
     @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
-        return basicCollisionDetector.detect(balls, null, null);
+        return basicCollisionDetector.detect(balls,null,null);
     }
+
 }

@@ -30,8 +30,8 @@ public class PipeListener implements TickListener {
         filters.add(new CurvedPipeCollisionFilter(gravity));
     }
 
+    @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
         return collisionDetector.detect(balls, pipes, filters);
     }
-
 }
