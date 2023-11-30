@@ -150,6 +150,7 @@ public class PlayerPanel extends Application implements Initializable {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
+
         primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
@@ -370,7 +371,7 @@ public class PlayerPanel extends Application implements Initializable {
                 return;
             }
             Dialog<Pair<String, String>> dialog = new Dialog<>();
-            dialog.setTitle("About");
+            dialog.setTitle("仓库链接");
             Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("icons/ball.png"));
 
@@ -387,32 +388,10 @@ public class PlayerPanel extends Application implements Initializable {
                 HostServices hostServices = PlayerPanel.this.getHostServices();
                 hostServices.showDocument(repository.getText());
             });
-            Label author = new Label("Author:");
 
-            Hyperlink author0 = new Hyperlink("D-Sketon");
-            author0.setOnAction(e -> {
-                HostServices hostServices = PlayerPanel.this.getHostServices();
-                hostServices.showDocument("https://github.com/D-Sketon");
-            });
-
-            Hyperlink author1 = new Hyperlink("Uzemiu");
-            author1.setOnAction(e -> {
-                HostServices hostServices = PlayerPanel.this.getHostServices();
-                hostServices.showDocument("https://github.com/Uzemiu");
-            });
-
-            Hyperlink author2 = new Hyperlink("re20051");
-            author2.setOnAction(e -> {
-                HostServices hostServices = PlayerPanel.this.getHostServices();
-                hostServices.showDocument("https://github.com/re20051");
-            });
             grid.add(content, 1, 0);
             grid.add(githubRepository, 0, 3);
             grid.add(repository, 1, 3);
-            grid.add(author, 0, 4);
-            grid.add(author0, 1, 4);
-            grid.add(author1, 1, 5);
-            grid.add(author2, 1, 6);
             dialog.getDialogPane().setContent(grid);
 
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
@@ -524,6 +503,8 @@ public class PlayerPanel extends Application implements Initializable {
     private void initCanvas() {
         // 设置坐标系转换
         GraphicsContext gc = gizmoCanvas.getGraphicsContext2D();
+        // gc.setFill(Color.DARKGRAY);
+        // gc.fillRect(0,0,gizmoCanvas.getWidth(),gizmoCanvas.getHeight());
         Affine affine = new Affine();
         // 正常设置
         affine.appendScale(1, -1);
@@ -602,23 +583,24 @@ public class PlayerPanel extends Application implements Initializable {
             } catch (Exception e) {
                 Toast.makeText(primaryStage, e.getMessage(), 1500, 200, 200);
             }
-
             drawGizmo(gc);
             previewImageView.setVisible(false);
             event.setDropCompleted(true);
             event.consume();
         });
-
         drawGizmo(gc);
     }
 
     private void clearCanvas(GraphicsContext gc) {
         gc.clearRect(0, 0, gizmoCanvas.getWidth(), gizmoCanvas.getHeight());
+        gc.setFill(Color.web("#161A30"));
+        gc.fillRect(0, 0, gizmoCanvas.getWidth(), gizmoCanvas.getHeight());
     }
-
+    // 渲染游戏界面 画网格 渲染背景
     private void drawGrid(GraphicsContext gc) {
+
         int gridSize = world.getGridSize();
-        gc.setStroke(Color.GRAY);
+        gc.setStroke(Color.LIGHTBLUE);
         gc.setLineWidth(1);
         for (int i = 0; i < gizmoCanvas.getWidth(); i += gridSize) {
             gc.strokeLine(i, 0, i, gizmoCanvas.getHeight());

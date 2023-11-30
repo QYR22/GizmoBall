@@ -7,9 +7,8 @@ import gizmoball.engine.physics.PhysicsBody;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Affine;
 
-/**
- * <p><b>仅支持只包含path节点的svg，svg不能被格式化</b></p>
- * <p>因为{@link javafx.scene.image.Image}不支持SVG，所以没有继承{@link ImageRenderer}</p>
+/* 仅支持只包含path节点的svg，svg不能被格式化
+ 因为{@link javafx.scene.image.Image}不支持SVG，所以没有继承{@link ImageRenderer}
  */
 public class SVGRenderer implements CanvasRenderer {
 

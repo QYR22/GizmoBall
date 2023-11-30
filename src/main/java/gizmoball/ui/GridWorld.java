@@ -26,15 +26,10 @@ import static gizmoball.game.GizmoSettings.BOUNDARY_BUFFER;
 @Slf4j
 public class GridWorld extends GizmoWorld {
 
-
-    /**
-     * 边界AABB
-     */
+    /* 网格边界AABB */
     protected AABB boundaryAABB;
 
-    /**
-     * 每个网格中对应的PhysicsBody，一个body（包括三角，圆等）视为占满完整的一格
-     */
+    /* 每个网格中对应的PhysicsBody 一个PhysicsBody e.g.triangle三角、圆、方形、占满完整的一格 */
     protected GizmoPhysicsBody[][] gizmoGridBodies;
 
     protected int gridSize;
@@ -56,11 +51,8 @@ public class GridWorld extends GizmoWorld {
     }
 
     /**
-     * <p>以右手系坐标，获取某个点对应的格子的下标</p>
-     * <p>x : [0, GRID_SIZE)对应下标0</p>
-     *
-     * @param x 右手系坐标x
-     * @param y 右手系坐标y
+     * xxx 获取某个点对应的格子的下标
+     * x : [0, GRID_SIZE)对应下标0
      * @return 如果超出格子范围，返回null，否则返回格子下标长度为2的数组[i, j]，对应gizmoGridBodies[i][j]
      */
     public int[] getGridIndex(double x, double y) {
@@ -76,9 +68,6 @@ public class GridWorld extends GizmoWorld {
         return index;
     }
 
-    /**
-     * @see #getGridIndex(double, double)
-     */
     private int[] getGridIndex(Vector2 position) {
         return getGridIndex(position.x, position.y);
     }
