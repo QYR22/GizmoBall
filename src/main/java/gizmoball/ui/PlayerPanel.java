@@ -55,15 +55,11 @@ public class PlayerPanel extends Application implements Initializable {
     @FXML
     Canvas gizmoCanvas;
 
-    /**
-     * 游戏组件的面板（球，方，角，管道...）
-     */
+    /* 游戏组件面板 e.g.球，方，角，管道... */
     @FXML
     GridPane gizmoGridPane;
 
-    /**
-     * 操作游戏组件的面板（删除，缩放，旋转...）
-     */
+    /* 操作选项面板（删除，缩放，旋转...） */
     @FXML
     HBox upperHBox;
 
@@ -91,38 +87,28 @@ public class PlayerPanel extends Application implements Initializable {
     @FXML
     AnchorPane anchorPane;
 
-    /**
-     * 区别于生产模式
-     */
+    /* 区别于生产模式 */
     private static final boolean DEV_MODE = false;
 
-    /**
-     * 游戏世界
-     */
+    /* 游戏世界 */
     private GridWorld world;
 
     /* true: 编辑模式  false: 设计模式 */
     private boolean inDesign = true;
 
-    /**
-     * 当前选中的组件
-     */
+    /* 当前选中的组件 */
     private GizmoPhysicsBody selectedBody;
 
     private GizmoOpHandler gizmoOpHandler;
 
-    /**
-     * 拖拽传参的key
-     */
+    /* 拖拽传参的key */
     private static final DataFormat GIZMO_TYPE_DATA = new DataFormat("gizmo");
 
     private static Vector2 preferredSize;
 
     private Stage primaryStage;
 
-    /**
-     * 线程相关
-     */
+    /* 线程相关 */
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     private final ScheduledFuture<?>[] scheduledFuture = new ScheduledFuture<?>[1];
@@ -249,7 +235,7 @@ public class PlayerPanel extends Application implements Initializable {
             startGame();
         });
 
-        // 暂停游戏（设计模式）
+        // 暂停游戏 设计模式
         ImageLabelComponent design = gameOps[1];
         design.createVBox();
         design.getImageWrapper().setOnMouseClicked(event -> {
@@ -321,9 +307,7 @@ public class PlayerPanel extends Application implements Initializable {
         lowerHBox.getChildren().add(gameOps[1].getVBox());
     }
 
-    /**
-     * 初始化世界
-     */
+    /* 初始化世界 */
     private void initWorld() {
         double worldWidth = gizmoCanvas.getWidth();
         double worldHeight = gizmoCanvas.getHeight();
@@ -395,11 +379,10 @@ public class PlayerPanel extends Application implements Initializable {
             grid.setVgap(10);
             grid.setPadding(new Insets(10, 10, 10, 10));
 
-            Label content0 = new Label("ECNU OOAD Lab3 Group 07");
-            Label content1 = new Label("Gizmo Ball powered by Javafx");
+            Label content = new Label("弹球游戏");
 
             Label githubRepository = new Label("Github repository:");
-            Hyperlink repository = new Hyperlink("https://github.com/D-Sketon/ECNU-OOAD-LAB");
+            Hyperlink repository = new Hyperlink("https://github.com/QYR22/GizmoBall");
             repository.setOnAction(e -> {
                 HostServices hostServices = PlayerPanel.this.getHostServices();
                 hostServices.showDocument(repository.getText());
@@ -423,8 +406,7 @@ public class PlayerPanel extends Application implements Initializable {
                 HostServices hostServices = PlayerPanel.this.getHostServices();
                 hostServices.showDocument("https://github.com/re20051");
             });
-            grid.add(content0, 1, 0);
-            grid.add(content1, 1, 2);
+            grid.add(content, 1, 0);
             grid.add(githubRepository, 0, 3);
             grid.add(repository, 1, 3);
             grid.add(author, 0, 4);
@@ -448,10 +430,11 @@ public class PlayerPanel extends Application implements Initializable {
         initCanvas();
         initMenuItem();
 
-        // 绑定
+        // 绑定鼠标点击事件
         anchorPane.setOnMouseClicked(event -> {
             gizmoCanvas.requestFocus();
         });
+        // 绑定键盘事件
         anchorPane.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case LEFT:
@@ -461,7 +444,8 @@ public class PlayerPanel extends Application implements Initializable {
                     break;
                 case RIGHT:
                 case D:
-                    world.flipperUp(Flipper.Direction.RIGHT);
+                    if(inDesign) bindGizmoOp(GizmoCommand.MOVE_RIGHT);
+                    else world.flipperUp(Flipper.Direction.RIGHT);
                     break;
                 case UP:
                 case W:
@@ -492,7 +476,7 @@ public class PlayerPanel extends Application implements Initializable {
                     break;
             }
         });
-
+        // 松开按键释放flipper
         anchorPane.setOnKeyReleased(event -> {
             switch (event.getCode()) {
                 case LEFT:
@@ -509,7 +493,7 @@ public class PlayerPanel extends Application implements Initializable {
                     break;
             }
         });
-
+        // 鼠标滚轮事件绑定
         anchorPane.setOnScroll(event -> {
             double deltaY = event.getDeltaY();
             if (deltaY > 0) {
@@ -522,9 +506,7 @@ public class PlayerPanel extends Application implements Initializable {
 
     // ------------canvas-----------------
 
-    /**
-     * 高亮当前选中物体
-     */
+    /* 选中物体荧光边 */
     protected void highlightSelectedBody() {
         if (selectedBody == null) {
             gizmoOutlineRectangle.setVisible(false);
@@ -614,9 +596,9 @@ public class PlayerPanel extends Application implements Initializable {
             // 对齐到网格
             Vector2 snapped = GeometryUtil.snapToGrid(centerAABB, gridSize, gridSize);
             transformedCenter.add(snapped);
-            GizmoPhysicsBody physicsBody = gizmo.createPhysicsBody(preferredSize, transformedCenter);
+            GizmoPhysicsBody pb = gizmo.createPhysicsBody(preferredSize, transformedCenter);
             try {
-                gizmoOpHandler.addGizmo(physicsBody);
+                gizmoOpHandler.addGizmo(pb);
             } catch (Exception e) {
                 Toast.makeText(primaryStage, e.getMessage(), 1500, 200, 200);
             }
@@ -654,7 +636,7 @@ public class PlayerPanel extends Application implements Initializable {
 
         List<GizmoPhysicsBody> bodies = world.getBodies();
         for (GizmoPhysicsBody physicsBody : bodies) {
-            if (physicsBody instanceof GizmoPhysicsBody) {
+            if (physicsBody != null) {
                 physicsBody.drawToCanvas(gc);
                 if (isDebugMode) {
                     if (physicsBody.getShape() instanceof Ball) {
