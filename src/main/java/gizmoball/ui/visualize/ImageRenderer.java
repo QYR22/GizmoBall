@@ -22,12 +22,7 @@ public class ImageRenderer implements CanvasRenderer {
         this.image = upsideDown(image);
     }
 
-    /**
-     * 上下翻转图片
-     *
-     * @param image /
-     * @return /
-     */
+    /* 图片上下翻转 */
     public static Image upsideDown(Image image) {
         int w = (int) image.getWidth();
         int h = (int) image.getHeight();
@@ -43,14 +38,14 @@ public class ImageRenderer implements CanvasRenderer {
 
         return writableImage;
     }
-
+    /*  */
     @Override
     public void drawToCanvas(GraphicsContext gc, PhysicsBody body) {
         AbstractShape shape = body.getShape();
         Transform transform = shape.getTransform();
         int scale = shape.getRate();
 
-        final int gridSize = 30; // TODO how to get gridSize or render without gridSize
+        final int gridSize = 30; // xxx how to get gridSize or render without gridSize
 
         Affine affine = new Affine();
         affine.appendRotation(transform.getAngle(), transform.x, transform.y);

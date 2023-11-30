@@ -34,7 +34,7 @@ public class SVGNode {
             SVGNode svg = new SVGNode();
             svg.svgPaths = new ArrayList<>();
             SVGDocument document = FACTORY.createSVGDocument(SVG_NAMESPACE, in);
-            // 此处只解析iconfont下载的svg文件
+            // 只解析iconfont下载的svg文件
             SVGSVGElement root = document.getRootElement();
             svg.height = Double.parseDouble(root.getAttribute("width"));
             svg.width = Double.parseDouble(root.getAttribute("height"));
@@ -42,7 +42,7 @@ public class SVGNode {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
                 Node fill = node.getAttributes().getNamedItem("fill");
-                String d = node.getAttributes().getNamedItem("d").getTextContent(); // assume not null
+                String d = node.getAttributes().getNamedItem("d").getTextContent();
                 svg.svgPaths.add(new SVGPath(d, fill != null ? Color.valueOf(fill.getTextContent()) : Color.BLACK));
             }
             return svg;

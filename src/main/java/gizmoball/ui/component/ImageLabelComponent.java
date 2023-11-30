@@ -26,9 +26,7 @@ public class ImageLabelComponent {
 
     private ImageView imageView;
 
-    /**
-     * 由于SVG图片点击透明处无效，包装ImageView，添加事件监听器。
-     */
+    /* 由于SVG图片点击透明处无效，包装ImageView，添加事件监听器。 */
     private Pane imageWrapper;
 
     private Label label;

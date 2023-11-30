@@ -13,7 +13,7 @@ public class DefaultCanvasRenderer implements CanvasRenderer {
 
     public static final DefaultCanvasRenderer INSTANCE = new DefaultCanvasRenderer();
 
-    private static final Color FILL_COLOR = Color.valueOf("#1296db");
+    private static final Color FILL_COLOR = Color.valueOf("9ac2d6"); //("#1296db");
 
     private DefaultCanvasRenderer() {
     }

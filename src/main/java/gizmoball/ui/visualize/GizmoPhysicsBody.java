@@ -13,9 +13,7 @@ public class GizmoPhysicsBody extends PhysicsBody implements CanvasRenderer {
 
     private GizmoType gizmoType;
 
-    /**
-     * 反序列化用
-     */
+    /* 反序列化 打开字节流 重构对象 */
     @Deprecated
     public GizmoPhysicsBody() {
         super();
@@ -38,6 +36,4 @@ public class GizmoPhysicsBody extends PhysicsBody implements CanvasRenderer {
     public void drawToCanvas(GraphicsContext graphicsContext, PhysicsBody physicsBody) {
         gizmoType.getCanvasRenderer().drawToCanvas(graphicsContext, physicsBody);
     }
-
-
 }
