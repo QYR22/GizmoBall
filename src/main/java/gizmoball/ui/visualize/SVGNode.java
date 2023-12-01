@@ -16,20 +16,16 @@ import java.util.List;
 
 @Data
 public class SVGNode {
-
     protected List<SVGPath> svgPaths;
 
     protected double height;
-
     protected double width;
 
     private static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
     private static final SAXSVGDocumentFactory FACTORY = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
 
     public static SVGNode fromResource(InputStream in) {
-        if (in == null) {
-            return null;
-        }
+        if (in == null) return null;
         try {
             SVGNode svg = new SVGNode();
             svg.svgPaths = new ArrayList<>();

@@ -17,7 +17,9 @@
       </Pane>
       <Pane layoutX="600.0" layoutY="25.0" prefHeight="600.0" prefWidth="349.0" style="-fx-border-color: #333; -fx-border-width: 0 0 0 1;" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <GridPane fx:id="gizmoGridPane" alignment="CENTER" prefHeight="300.0" prefWidth="360.0" style="-fx-border-color: #333; -fx-border-width: 0 0 1 0;">
+             <HBox fx:id="lowerHBox" prefHeight="180.0" prefWidth="360.0" />
+             <HBox fx:id="upperHBox" alignment="CENTER" layoutY="180.0" prefHeight="120.0" prefWidth="360.0" />
+            <GridPane fx:id="gizmoGridPane" layoutY="300" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="360.0" style="-fx-border-color: #333; -fx-border-width: 0 0 1 0;">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -29,20 +31,18 @@
                 <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-             <HBox fx:id="lowerHBox" layoutY="421.0" prefHeight="180.0" prefWidth="360.0" />
-             <HBox fx:id="upperHBox" alignment="CENTER" layoutY="300.0" prefHeight="120.0" prefWidth="360.0" />
          </children></Pane>
       <MenuBar prefHeight="25.0" prefWidth="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
+            <Menu mnemonicParsing="false" text="编辑">
+                <items>
+                    <MenuItem fx:id="menuItemClear" mnemonicParsing="false" text="清除" />
+                </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="文件操作">
             <items>
                   <MenuItem fx:id="menuItemSave" mnemonicParsing="false" text="保存" />
               <MenuItem fx:id="menuItemLoad" mnemonicParsing="false" text="上传" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="编辑">
-            <items>
-              <MenuItem fx:id="menuItemClear" mnemonicParsing="false" text="清除" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="仓库链接">
