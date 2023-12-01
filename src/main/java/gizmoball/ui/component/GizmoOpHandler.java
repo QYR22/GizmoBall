@@ -10,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.function.Function;
 
-/** @description 游戏操作
- *  */
+/* 处理游戏操作 */
 @Slf4j
 public class GizmoOpHandler {
 
@@ -138,7 +137,6 @@ public class GizmoOpHandler {
         if (rate == 1) {
             throw new IllegalArgumentException("物件已经最小");
         }
-
         XXYY xxyy = gizmoBody.getShape().createXXYY();
         GeometryUtil.padToSquare(xxyy);
         world.setGrid(xxyy, null);

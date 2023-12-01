@@ -42,19 +42,21 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+/* 通过@FXML注入FXML文件，fxml中定义了用户界面布局，通过`fx:id`唯一标识符指定元素。
+* 在PlayerPanel中实现对这些组件的控制。 */
 @Slf4j
 public class PlayerPanel extends Application implements Initializable {
 
     /* 渲染弹球游戏界面的canvas */
     @FXML
     Canvas gizmoCanvas;
-
     /* 游戏组件面板 i.e.球、圆形、矩形、三角形 挡板flipper、管道pipe */
     @FXML
     GridPane gizmoGridPane;
@@ -86,28 +88,24 @@ public class PlayerPanel extends Application implements Initializable {
     @FXML
     AnchorPane anchorPane;
 
-    /* 区别于生产模式 */
-    private static final boolean DEV_MODE = false;
-
-    /* 游戏世界 */
+    // 游戏世界
     private GridWorld world;
 
-    /* true: 编辑模式  false: 设计模式 */
+    // true: 编辑模式  false: 设计模式
     private boolean inDesign = true;
 
-    /* 当前选中的组件 */
+    // 当前选中的组件
     private GizmoPhysicsBody selectedBody;
-
+    // 操作
     private GizmoOpHandler gizmoOpHandler;
 
-    /* 拖拽传参的key */
+    // 拖放传参的key
     private static final DataFormat GIZMO_TYPE_DATA = new DataFormat("gizmo");
 
     private static Vector2 preferredSize;
 
     private Stage primaryStage;
 
-    /* 线程相关 */
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     private final ScheduledFuture<?>[] scheduledFuture = new ScheduledFuture<?>[1];
@@ -139,16 +137,16 @@ public class PlayerPanel extends Application implements Initializable {
             new CommandComponent("icons/move_down.png", "下移", GizmoCommand.MOVE_DOWN),
             new CommandComponent("icons/move_left.png", "左移", GizmoCommand.MOVE_LEFT),
     };
-
+    // 总开关
     private static final ImageLabelComponent[] gameOps = {
             new ImageLabelComponent("icons/play.png", "开始游戏"),
             new ImageLabelComponent("icons/design.png", "设计模式"),
     };
-    // javafx启动类编写规则 重写start
+    // javafx启动类编写规则 必须重写start
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
-
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("main.fxml")));
+        // 关闭窗口直接结束
         primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
@@ -159,19 +157,18 @@ public class PlayerPanel extends Application implements Initializable {
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         this.primaryStage = primaryStage;
-
         root.requestFocus();
     }
-
+    // 游戏组件面板 球、圆形、矩形、三角形 挡板flipper、管道pipe、弯管道
     private void initGizmoGridPane() {
         for (int i = 0; i < gizmos.length; i++) {
             DraggableGizmoComponent gizmo = gizmos[i];
             gizmoGridPane.add(gizmo.createVBox(), i % 3, i / 3); // 3行3列
-            // 添加拖拽事件监听器
-            // 拖拽传参为gizmo的类型
+            // 添加拖放事件监听器
+            // 拖放传参为gizmo的类型
             int finalI = i;
             gizmo.getImageWrapper().setOnDragDetected(event -> {
-                if (!DEV_MODE && !inDesign) {
+                if (!inDesign) {
                     return;
                 }
                 Dragboard db = gizmo.getImageView().startDragAndDrop(TransferMode.ANY);
@@ -183,9 +180,8 @@ public class PlayerPanel extends Application implements Initializable {
             });
         }
     }
-
+    // 初始化操作选项
     private void initGizmoOp() {
-        // 初始物件操作
         for (CommandComponent gizmoOp : gizmoOps) {
             gizmoOp.createVBox().setMaxWidth(70);
             gizmoOp.getImageWrapper().setOnMouseClicked(event -> {
@@ -193,7 +189,7 @@ public class PlayerPanel extends Application implements Initializable {
             });
         }
     }
-
+    // 操作绑定
     private void bindGizmoOp(GizmoCommand command) {
         if (selectedBody == null || !inDesign) {
             return;
@@ -232,7 +228,7 @@ public class PlayerPanel extends Application implements Initializable {
         play.getImageWrapper().setOnMouseClicked(event -> {
             startGame();
         });
-        /*
+        /* 用lambda表达式已优化
         play.getImageWrapper().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -314,7 +310,6 @@ public class PlayerPanel extends Application implements Initializable {
         pane.setPrefHeight(60);
         borderPane.setCenter(pane);
         lowerHBox.getChildren().add(borderPane);
-
         lowerHBox.getChildren().add(gameOps[1].getVBox());
     }
 
@@ -326,10 +321,12 @@ public class PlayerPanel extends Application implements Initializable {
         preferredSize = new Vector2(world.getGridSize(), world.getGridSize());
         gizmoOpHandler = new GizmoOpHandler(world);
     }
-
+    // xxx 文件操作
     private void initMenuItem() {
+        // FileChooser文件选择对话框
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择文件");
+        // 过滤器： 1. 筛选导入的json类型文件 2. .* 所有类型文件
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Gizmo", "*.json"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
@@ -337,6 +334,7 @@ public class PlayerPanel extends Application implements Initializable {
 
         menuItemLoad.setOnAction(event -> {
             if (!inDesign) return;
+            // File对象file保存选中的文件
             fileChooser.setInitialDirectory(new File("."));
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) {
@@ -354,11 +352,11 @@ public class PlayerPanel extends Application implements Initializable {
             if (!inDesign) return;
             // set current time as filename
             String time = LocalDateTime.now().format(formatter);
-
-            fileChooser.setInitialFileName("gizmo" + time + ".json");
+            // 设置文件名
+            fileChooser.setInitialFileName("customize" + time + ".json");
             File file = fileChooser.showSaveDialog(primaryStage);
             if (file != null) {
-                try {
+                try { // 保存当前游戏内容快照
                     world.snapshot(file);
                 } catch (Exception e) {
                     Toast.makeText(primaryStage, "保存文件失败: " + e.getMessage(), 1500, 200, 200);
@@ -381,7 +379,7 @@ public class PlayerPanel extends Application implements Initializable {
                 return;
             }
             Dialog<Pair<String, String>> dialog = new Dialog<>();
-            dialog.setTitle("仓库链接");
+            dialog.setTitle("仓库地址");
             Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("icons/ball.png"));
 
@@ -398,7 +396,6 @@ public class PlayerPanel extends Application implements Initializable {
                 HostServices hostServices = PlayerPanel.this.getHostServices();
                 hostServices.showDocument(repository.getText());
             });
-
             grid.add(content, 1, 0);
             grid.add(githubRepository, 0, 3);
             grid.add(repository, 1, 3);
@@ -423,7 +420,7 @@ public class PlayerPanel extends Application implements Initializable {
         anchorPane.setOnMouseClicked(event -> {
             gizmoCanvas.requestFocus();
         });
-        // 绑定键盘事件
+        // 绑定键盘按键事件
         anchorPane.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case LEFT:
@@ -520,7 +517,7 @@ public class PlayerPanel extends Application implements Initializable {
         affine.appendTranslation(0, -gizmoCanvas.getHeight());
         gc.setTransform(affine);
 
-        // 拖拽监听器 鼠标点击时绑定
+        // 拖放监听器 鼠标点击时绑定
         Canvas target = gizmoCanvas;
         target.setOnMouseClicked(event -> {
             target.requestFocus();
@@ -536,7 +533,8 @@ public class PlayerPanel extends Application implements Initializable {
                 }
             }
         });
-        // 拖到画布上时显示物件预览/能否拖拽
+        // 对拖放手势 ref:https://blog.idrsolutions.com/how-to-implement-drag-and-drop-function-in-a-javafx-application/
+        // 拖到画布上时显示物件预览/能否拖放
         target.setOnDragOver(event -> {
             if (event.getGestureSource() != target) {
                 Dragboard db = event.getDragboard();
@@ -561,12 +559,14 @@ public class PlayerPanel extends Application implements Initializable {
             }
             event.consume();
         });
+        // 拖放手势离开目标方格时触发事件
         target.setOnDragExited(event -> {
             previewImageView.setVisible(false);
             event.consume();
         });
+        // 用户松开鼠标按键触发事件
         target.setOnDragDropped(event -> {
-            if (!DEV_MODE && !inDesign) {
+            if (!inDesign) {
                 return;
             }
             Dragboard db = event.getDragboard();
@@ -604,7 +604,7 @@ public class PlayerPanel extends Application implements Initializable {
         gc.setFill(Color.web("#161A30"));
         gc.fillRect(0, 0, gizmoCanvas.getWidth(), gizmoCanvas.getHeight());
     }
-    // 渲染游戏界面 画网格 渲染背景
+    // 渲染游戏界面背景 画出网格
     private void drawGrid(GraphicsContext gc) {
         int gridSize = world.getGridSize();
         gc.setStroke(Color.LIGHTBLUE);

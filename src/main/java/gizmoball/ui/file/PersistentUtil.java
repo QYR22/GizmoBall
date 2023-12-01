@@ -25,7 +25,6 @@ public class PersistentUtil {
         mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
     }
-
     /* 包装List PhysicsBody 否则直接反序列化List不会包含PhysicsBody的class信息 */
     private static class Wrapper {
         List<PhysicsBody> bodies;

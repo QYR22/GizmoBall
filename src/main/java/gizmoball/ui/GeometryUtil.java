@@ -49,11 +49,7 @@ public class GeometryUtil {
         return new Vector2(offsetX, offsetY);
     }
 
-    /**
-     * 将XXYY补成一个正方形
-     *
-     * @param xxyy /
-     */
+    /* 将形状补成一个正方形 */
     public static void padToSquare(XXYY xxyy) {
         double width = xxyy.maxX - xxyy.minX;
         double height = xxyy.maxY - xxyy.minY;

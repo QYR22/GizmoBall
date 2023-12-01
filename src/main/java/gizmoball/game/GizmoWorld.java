@@ -86,7 +86,7 @@ public class GizmoWorld extends AbstractWorld<GizmoPhysicsBody> {
             }
         }
     }
-
+    // 定期调用的方法 应对碰撞响应。
     @Override
     public void tick() {
         List<Pair<Manifold, Pair<PhysicsBody,PhysicsBody>>> pairs=new ArrayList<>();
