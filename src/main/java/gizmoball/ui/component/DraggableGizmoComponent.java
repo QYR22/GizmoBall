@@ -1,6 +1,5 @@
 package gizmoball.ui.component;
 
-
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
 import gizmoball.game.entity.*;
@@ -14,7 +13,7 @@ import java.util.function.Function;
 
 import static gizmoball.game.GizmoSettings.BLACK_HOLE_BIAS;
 
-/* 所有可拖动组件：球ball、黑洞blackhole、管道pipe、三角形triangle */
+/* 所有可拖动组件：球ball、黑洞blackhole、管道pipe、三角形triangle、挡板flipper */
 @Getter
 @Setter
 public class DraggableGizmoComponent extends ImageLabelComponent {
@@ -92,9 +91,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> leftFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.x, -preferredSize.y/2.0),
-                new Vector2(preferredSize.x , -preferredSize.y/2.0),
-                new Vector2(-preferredSize.x, preferredSize.y  / 2.0)
+                new Vector2(-preferredSize.x, -preferredSize.y / 2.0),
+                new Vector2(preferredSize.x , -preferredSize.y / 2.0),
+                new Vector2(-preferredSize.x, preferredSize.y / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.LEFT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);
@@ -107,9 +106,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> rightFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.x , -preferredSize.y  / 2.0),
+                new Vector2(-preferredSize.x , -preferredSize.y / 2.0),
                 new Vector2(preferredSize.x , -preferredSize.y / 2.0),
-                new Vector2(preferredSize.x, preferredSize.y  / 2.0)
+                new Vector2(preferredSize.x, preferredSize.y / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.RIGHT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);

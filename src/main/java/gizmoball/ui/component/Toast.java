@@ -42,7 +42,9 @@ public class Toast {
         scene.setFill(Color.TRANSPARENT);
         toastStage.setScene(scene);
         toastStage.show();
-
+        // 这里用时间轴对象控制弹窗的显示时间
+        // 控制模式：显示 --> 淡出
+        // 显示：让线程休眠一段时间用于展示弹框信息
         Timeline fadeInTimeline = new Timeline();
         KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInDelay), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 1));
         fadeInTimeline.getKeyFrames().add(fadeInKey1);

@@ -21,7 +21,6 @@ import java.util.List;
 
 import static gizmoball.game.GizmoSettings.BOUNDARY_BUFFER;
 
-
 @Getter
 @Slf4j
 public class GridWorld extends GizmoWorld {
@@ -84,12 +83,7 @@ public class GridWorld extends GizmoWorld {
         }
     }
 
-    /**
-     * <p>检查XXYY所在范围的格子是否已经有物体</p>
-     * <p>同时会检查是否越界</p>
-     *
-     * @param xxyy /
-     * @return /
+    /* xxx 检查`XXYY`指定范围的格子是否已被占用 同时会检查是否越界
      */
     public boolean checkOverlay(XXYY xxyy, PhysicsBody body) {
         int[] bottomLeft = getGridIndex(xxyy.getMinX(), xxyy.getMinY());
@@ -116,7 +110,6 @@ public class GridWorld extends GizmoWorld {
     public void initBoundary() {
         double worldWidth = boundaryXXYY.maxX;
         double worldHeight = boundaryXXYY.maxY;
-        // init border
         // bottom
         createBoundary(worldWidth / 2 + BOUNDARY_BUFFER, worldHeight / 2, worldWidth / 2, -worldHeight / 2);
         // top
@@ -175,9 +168,7 @@ public class GridWorld extends GizmoWorld {
 
     private String snapshot;
 
-    /**
-     * <p>获取当前世界的物体快照到默认文件".snapshot.json"</p>
-     *
+    /* 获取当前世界的物体快照到默认文件".snapshot.json"
      * @return json格式的字符串表示每一个物体
      */
     public String snapshot() {
@@ -185,9 +176,7 @@ public class GridWorld extends GizmoWorld {
     }
 
     /**
-     * <p>获取当前世界的物体快照到指定文件</p>
-     *
-     * @param file 指定文件
+     * 获取当前世界的物体快照到指定文件
      * @return json格式的字符串表示每一个物体
      */
     public String snapshot(File file) {
@@ -199,7 +188,6 @@ public class GridWorld extends GizmoWorld {
                     bodiesToJson.addAll(v);
                 }
             });
-
             snapshot = PersistentUtil.toJsonString(bodiesToJson);
             log.debug("take snapshot: {}", snapshot);
 
@@ -211,17 +199,12 @@ public class GridWorld extends GizmoWorld {
         return snapshot;
     }
 
-    /**
-     * @see #restore(String)
-     */
     public void restore() throws RuntimeException {
         restore(snapshot);
     }
 
-    /**
-     * <p>恢复世界的物体</p>
-     *
-     * @param snapshot snapshot获取的json字符串
+    /* 恢复世界的物体
+     * snapshot获取的json字符串
      */
     public void restore(String snapshot) throws RuntimeException {
         try {
@@ -236,7 +219,6 @@ public class GridWorld extends GizmoWorld {
         } catch (IOException e) {
             log.error("restore error", e);
             throw new RuntimeException(e);
-
         }
     }
 

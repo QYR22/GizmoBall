@@ -29,13 +29,12 @@ public class ImageRenderer implements CanvasRenderer {
         PixelReader pixelReader = image.getPixelReader();
         WritableImage writableImage = new WritableImage(w, h);
         PixelWriter pixelWriter = writableImage.getPixelWriter();
-
+        // 按像素逐个重新赋值给新图片 x不变 y=h-1-遍历值
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 pixelWriter.setArgb(j, h - 1 - i, pixelReader.getArgb(j, i));
             }
         }
-
         return writableImage;
     }
     /*  */
@@ -45,8 +44,7 @@ public class ImageRenderer implements CanvasRenderer {
         Transform transform = shape.getTransform();
         int scale = shape.getRate();
 
-        final int gridSize = 30; // xxx how to get gridSize or render without gridSize
-
+        final int gridSize = 30;
         Affine affine = new Affine();
         affine.appendRotation(transform.getAngle(), transform.x, transform.y);
         gc.save();
@@ -57,5 +55,4 @@ public class ImageRenderer implements CanvasRenderer {
                 gridSize * scale, gridSize * scale);
         gc.restore();
     }
-
 }

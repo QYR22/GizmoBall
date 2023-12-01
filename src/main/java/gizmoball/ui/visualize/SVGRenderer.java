@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Affine;
 
 /* 仅支持只包含path节点的svg，svg不能被格式化
- 因为{@link javafx.scene.image.Image}不支持SVG，所以没有继承{@link ImageRenderer}
+ `javafx.scene.image.Image`不支持SVG
  */
 public class SVGRenderer implements CanvasRenderer {
 
@@ -31,9 +31,9 @@ public class SVGRenderer implements CanvasRenderer {
             gc.save();
 
             Affine affine = new Affine();
-            affine.appendRotation(transform.getAngle(), transform.x, transform.y); // TODO center
+            affine.appendRotation(transform.getAngle(), transform.x, transform.y);
             affine.appendTranslation(transform.getX() - shapeWidth / 2,
-                    transform.getY() - shapeHeight / 2 + shapeHeight); // +shapeHeight为了处理图片上下翻转
+                    transform.getY() - shapeHeight / 2 + shapeHeight);
             affine.appendScale(shapeHeight / 1024, -shapeWidth / 1024);
             gc.transform(affine);
 
@@ -45,7 +45,6 @@ public class SVGRenderer implements CanvasRenderer {
                 gc.fill();
                 gc.closePath();
             }
-
             gc.restore();
         }
     }

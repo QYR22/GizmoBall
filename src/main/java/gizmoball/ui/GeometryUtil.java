@@ -4,12 +4,8 @@ import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Vector2;
 
 public class GeometryUtil {
-
     /**
      * 计算XXYY到边界的偏移，返回能将XXYY移动到边界内的最小向量
-     *
-     * @param xxyy     目标xxyy
-     * @param boundary 边界
      * @return 返回能将XXYY移动到边界内的最小向量
      */
     public static Vector2 offsetToBoundary(XXYY xxyy, XXYY boundary) {
@@ -31,9 +27,6 @@ public class GeometryUtil {
     /**
      * 计算XXYY对齐到网格的偏移，返回能将XXYY对齐到网格的最小向量
      *
-     * @param xxyy       目标xxyy
-     * @param gridWidth  网格宽度
-     * @param gridHeight 网格高度
      * @return 到对其网格需要应用的偏移
      */
     public static Vector2 snapToGrid(XXYY xxyy, int gridWidth, int gridHeight) {
@@ -44,9 +37,6 @@ public class GeometryUtil {
     /**
      * 计算点对齐到网格的偏移，返回能将点对齐到网格的最小向量
      *
-     * @param vector     点
-     * @param gridWidth  网格宽度
-     * @param gridHeight 网格高度
      * @return 到对其网格需要应用的偏移
      */
     public static Vector2 snapToGrid(Vector2 vector, int gridWidth, int gridHeight) {

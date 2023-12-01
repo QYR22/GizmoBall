@@ -55,14 +55,13 @@ public class PlayerPanel extends Application implements Initializable {
     @FXML
     Canvas gizmoCanvas;
 
-    /* 游戏组件面板 e.g.球，方，角，管道... */
+    /* 游戏组件面板 i.e.球、圆形、矩形、三角形 挡板flipper、管道pipe */
     @FXML
     GridPane gizmoGridPane;
 
-    /* 操作选项面板（删除，缩放，旋转...） */
+    /* 操作选项面板 i.e.删除、上下左右移动、缩放、旋转... */
     @FXML
     HBox upperHBox;
-
     @FXML
     HBox lowerHBox;
 
@@ -140,12 +139,11 @@ public class PlayerPanel extends Application implements Initializable {
             new CommandComponent("icons/move_down.png", "下移", GizmoCommand.MOVE_DOWN),
             new CommandComponent("icons/move_left.png", "左移", GizmoCommand.MOVE_LEFT),
     };
-    // 游戏总控图标
+
     private static final ImageLabelComponent[] gameOps = {
             new ImageLabelComponent("icons/play.png", "开始游戏"),
             new ImageLabelComponent("icons/design.png", "设计模式"),
     };
-
     // javafx启动类编写规则 重写start
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -228,13 +226,20 @@ public class PlayerPanel extends Application implements Initializable {
                 });
             }
         };
-
         // 开始游戏
         ImageLabelComponent play = gameOps[0];
         play.createVBox();
         play.getImageWrapper().setOnMouseClicked(event -> {
             startGame();
         });
+        /*
+        play.getImageWrapper().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                startGame();
+            }
+        });
+        * */
 
         // 暂停游戏 设计模式
         ImageLabelComponent design = gameOps[1];
@@ -286,12 +291,17 @@ public class PlayerPanel extends Application implements Initializable {
         }
 
         upperHBox.setSpacing(20);
+        // lower
         lowerHBox.getChildren().add(gameOps[0].getVBox());
 
         BorderPane borderPane = new BorderPane();
+        // 上移
         BorderPane.setAlignment(gizmoOps[4].getImageWrapper(), Pos.CENTER);
+        // 右移
         BorderPane.setAlignment(gizmoOps[5].getImageWrapper(), Pos.CENTER_RIGHT);
+        // 下移
         BorderPane.setAlignment(gizmoOps[6].getImageWrapper(), Pos.CENTER);
+        // 左移
         BorderPane.setAlignment(gizmoOps[7].getImageWrapper(), Pos.CENTER_LEFT);
 
         borderPane.setTop(gizmoOps[4].getImageWrapper());
@@ -484,8 +494,7 @@ public class PlayerPanel extends Application implements Initializable {
     }
 
     // ------------canvas-----------------
-
-    /* 选中物体荧光边 */
+    /* 选中物体荧光高亮边 */
     protected void highlightSelectedBody() {
         if (selectedBody == null) {
             gizmoOutlineRectangle.setVisible(false);
@@ -511,7 +520,7 @@ public class PlayerPanel extends Application implements Initializable {
         affine.appendTranslation(0, -gizmoCanvas.getHeight());
         gc.setTransform(affine);
 
-        // 增加拖拽监听器
+        // 拖拽监听器 鼠标点击时绑定
         Canvas target = gizmoCanvas;
         target.setOnMouseClicked(event -> {
             target.requestFocus();
@@ -521,6 +530,7 @@ public class PlayerPanel extends Application implements Initializable {
                 // 获取当前index
                 int[] index = world.getGridIndex(x, y);
                 if (index != null) {
+                    // 获取当前的网格位置 并高亮
                     selectedBody = world.gizmoGridBodies[index[0]][index[1]];
                     highlightSelectedBody();
                 }
@@ -529,11 +539,9 @@ public class PlayerPanel extends Application implements Initializable {
         // 拖到画布上时显示物件预览/能否拖拽
         target.setOnDragOver(event -> {
             if (event.getGestureSource() != target) {
-
                 Dragboard db = event.getDragboard();
                 int gizmoIndex = (int) db.getContent(GIZMO_TYPE_DATA);
                 DraggableGizmoComponent gizmo = gizmos[gizmoIndex];
-
                 // 显示预览图片
                 double x = event.getX();
                 double y = event.getY();
@@ -598,7 +606,6 @@ public class PlayerPanel extends Application implements Initializable {
     }
     // 渲染游戏界面 画网格 渲染背景
     private void drawGrid(GraphicsContext gc) {
-
         int gridSize = world.getGridSize();
         gc.setStroke(Color.LIGHTBLUE);
         gc.setLineWidth(1);
@@ -650,6 +657,5 @@ public class PlayerPanel extends Application implements Initializable {
             }
         }
     }
-
     private boolean isDebugMode = false;
 }
