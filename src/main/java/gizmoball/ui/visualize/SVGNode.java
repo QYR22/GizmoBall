@@ -30,7 +30,7 @@ public class SVGNode {
             SVGNode svg = new SVGNode();
             svg.svgPaths = new ArrayList<>();
             SVGDocument document = FACTORY.createSVGDocument(SVG_NAMESPACE, in);
-            // 只解析iconfont下载的svg文件
+            // 解析 svg
             SVGSVGElement root = document.getRootElement();
             svg.height = Double.parseDouble(root.getAttribute("width"));
             svg.width = Double.parseDouble(root.getAttribute("height"));

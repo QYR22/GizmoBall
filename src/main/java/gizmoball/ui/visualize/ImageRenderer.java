@@ -10,12 +10,14 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.transform.Affine;
 
+import java.util.Objects;
+
 public class ImageRenderer implements CanvasRenderer {
 
     private final Image image;
 
     public ImageRenderer(String resource) {
-        this(new Image(ImageRenderer.class.getClassLoader().getResourceAsStream(resource)));
+        this(new Image(Objects.requireNonNull(ImageRenderer.class.getClassLoader().getResourceAsStream(resource))));
     }
 
     public ImageRenderer(Image image) {

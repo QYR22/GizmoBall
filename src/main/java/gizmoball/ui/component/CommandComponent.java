@@ -4,6 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+// 封装操作命令
 @Getter
 public class CommandComponent extends ImageLabelComponent {
 

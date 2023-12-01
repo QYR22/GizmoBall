@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Affine;
 
 /* 仅支持只包含path节点的svg，svg不能被格式化
- `javafx.scene.image.Image`不支持SVG
+   `javafx.scene.image.Image`不支持SVG
  */
 public class SVGRenderer implements CanvasRenderer {
 

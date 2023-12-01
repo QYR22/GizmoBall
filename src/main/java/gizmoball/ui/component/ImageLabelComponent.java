@@ -29,7 +29,7 @@ public class ImageLabelComponent {
     /* 因为SVG图片虽然是200*200，但并不是全占满的，点击透明处无效。
     为了点击方格都能选中该物件 解决方法：包装ImageView，添加事件监听器。 */
     private Pane imageWrapper;
-
+    // 对应的标签(文字信息
     private Label label;
 
     public ImageLabelComponent(String resource, String labelText) {
