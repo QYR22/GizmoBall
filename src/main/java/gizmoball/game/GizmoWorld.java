@@ -22,9 +22,11 @@ public class GizmoWorld extends AbstractWorld<GizmoPhysicsBody> {
 
     public GizmoWorld(Vector2 gravity){
         super(gravity);
+        //创建一个哈希表，用于存储不同类型的物理物体的列表
         bodyTypeMap=new HashMap<>();
         List<PhysicsBody> balls=new ArrayList<>();
         bodyTypeMap.put(GizmoType.BALL,balls);
+        //用于存储不同类型的碰撞监听器
         tickListeners=new ArrayList<>();
         tickListeners.add(new BallListener(balls));
         tickListeners.add(new BlackHoleListener(balls, bodyTypeMap.computeIfAbsent(GizmoType.BLACK_HOLE, k -> new ArrayList<>()), bodies));

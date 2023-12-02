@@ -15,6 +15,7 @@ public class ObstacleListener implements TickListener {
     private final List<PhysicsBody> balls;
     private final List<PhysicsBody> obstacles;
 
+    /*在每一帧中监听球和遮挡物之间的碰撞事件*/
     @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
         return basicCollisionDetector.detect(balls,obstacles,new ArrayList<>());

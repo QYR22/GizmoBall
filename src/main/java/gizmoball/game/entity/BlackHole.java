@@ -3,7 +3,7 @@ package gizmoball.game.entity;
 import gizmoball.engine.geometry.shape.Circle;
 
 import gizmoball.engine.geometry.Transform;
-
+/*黑洞*/
 public class BlackHole extends Circle {
     @Deprecated
     public BlackHole(){}

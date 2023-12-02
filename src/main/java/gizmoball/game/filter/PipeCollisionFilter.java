@@ -33,6 +33,7 @@ public class PipeCollisionFilter implements CollisionFilter {
     public boolean isAllowedNarrowPhase(PhysicsBody body1,PhysicsBody body2){
         return true;
     }
+    /*根据球和管道的形状、位置、方向信息判断球和弯管的相对位置关系（内部/外部/边缘），返回布尔值表示是否允许碰撞发生*/
     @Override
     public boolean isAllowedManifold(PhysicsBody body1,PhysicsBody body2,AbstractShape shape,Penetration penetration){
         AbstractShape ballShape=body1.getShape();
@@ -75,9 +76,12 @@ public class PipeCollisionFilter implements CollisionFilter {
         return true;
 
     }
-
+    /*修正球和管道之间碰撞的结果*/
     private void fixCollision(Ball ball, Pipe pipe, Penetration penetration) {
+        //获取穿透的法线方向和深度，以及球和管道的位置、方向等信息
         Vector2 normal=penetration.getNormal();
+        //判断管道的方向是横向/纵向，以及球的位置是在管道的上方/下方/左边/右边
+        //重新计算穿透的深度，并将法线方向设为与管道的边缘垂直的方向
         if(pipeDirection==Pipe.PipeDirection.TRANSVERSE){
             boolean isHigh=ball.getTransform().y>pipe.getTransform().y;
             if(isHigh){
@@ -102,10 +106,11 @@ public class PipeCollisionFilter implements CollisionFilter {
             }
         }
     }
-
+    /*维持弯管特性*/
     private void maintainPipeProperty(PhysicsBody body1, PhysicsBody body2) {
-        body1.getForces().clear();
+        body1.getForces().clear();//清除球的所有力，只保留重力作用
         body1.integrateVelocity(gravity.getNegative());
+        //判断球和弯管的旋转速率是否相同，如果相同，根据弯管的方向，将球的线速度在相应的轴上设为零，使球沿着弯管的弧线运动。
         if(body1.getShape().getRate()==body2.getShape().getRate()){
             if(pipeDirection==Pipe.PipeDirection.TRANSVERSE){
                 linearVelocity.y=0;
@@ -113,11 +118,12 @@ public class PipeCollisionFilter implements CollisionFilter {
                 linearVelocity.x=0;
             }
         }
+        //如果球的线速度小于30，将球的线速度放大到30，使球不会因为速度过小而停留在弯管内。
         if(linearVelocity.getMagnitude()<30){
             linearVelocity.multiply(30/linearVelocity.getMagnitude());
         }
     }
-
+    /*判断是否发生碰撞*/
     private boolean isCollision() {
         if(pipeDirection==Pipe.PipeDirection.TRANSVERSE){
             return ballY+radius>maxY||ballY-radius<minY;
@@ -125,11 +131,11 @@ public class PipeCollisionFilter implements CollisionFilter {
             return ballX+radius>maxX||ballX-radius<minX;
         }
     }
-
+    /*判断是否在管内*/
     private boolean isInPipe() {
         return ballX>minX&&ballX<maxX&&ballY<maxY&&ballY>minY;
     }
-
+    /*判断是否在管外*/
     private boolean isOutPipe() {
         if(pipeDirection== Pipe.PipeDirection.TRANSVERSE){
             if(ballY>maxY||ballY<minY){
