@@ -37,8 +37,11 @@ public class BallListener implements TickListener {
         }
         @Override
         public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> detect(List<PhysicsBody> bodies1, List<PhysicsBody> bodies2, List<CollisionFilter> listeners) {
+            //创建一个空的列表，用于存储碰撞流形和碰撞物体对
             List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> manifolds = new ArrayList<>();
+            //碰撞流形求解器，用于计算碰撞流形的信息
             ManifoldSolver manifoldSolver = new ManifoldSolver();
+            //对每一对球进行碰撞检测，对processDetect传入碰撞流形求解器和两个球对象作为参数。
             for (int i = 0; i < bodies1.size() - 1; i++) {
                 for (int j = i + 1; j < bodies1.size(); j++) {
                     PhysicsBody physicsBody1 = bodies1.get(i);
@@ -46,6 +49,7 @@ public class BallListener implements TickListener {
                     Ball ball1 = (Ball) physicsBody1.getShape();
                     Ball ball2 = (Ball) physicsBody2.getShape();
                     Manifold manifold = this.processDetect(manifoldSolver, ball1, ball2);
+                    //如果processDetect方法返回了一个非空的碰撞流形，说明两个球发生了碰撞，将碰撞流形和碰撞物体对作为一个元组添加到列表中
                     if (manifold != null) {
                         Pair<PhysicsBody, PhysicsBody> physicsBodyPhysicsBodyPair = new Pair<>(physicsBody1, physicsBody2);
                         manifolds.add(new Pair<>(manifold, physicsBodyPhysicsBodyPair));
@@ -55,6 +59,7 @@ public class BallListener implements TickListener {
             return manifolds;
         }
     };
+    /*用于在每一帧中调用碰撞检测器，检测所有球之间的碰撞，并返回一个包含碰撞流形和碰撞物体对的列表*/
     @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
         return basicCollisionDetector.detect(balls,null,null);

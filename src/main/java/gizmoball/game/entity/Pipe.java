@@ -5,6 +5,7 @@ import gizmoball.engine.geometry.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
+/*管道*/
 @Getter
 @Setter
 public class Pipe extends Rectangle {

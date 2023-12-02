@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-/*擋板*/
+/*挡板*/
 public class Flipper extends Triangle {
     private Direction direction;
     public enum Direction{

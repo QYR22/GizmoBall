@@ -29,7 +29,7 @@ public class PipeListener implements TickListener {
         filters.add(new PipeCollisionFilter(gravity));
         filters.add(new CurvedPipeCollisionFilter(gravity));
     }
-
+    /*在每一帧中监听球和管道之间的碰撞事件*/
     @Override
     public List<Pair<Manifold, Pair<PhysicsBody, PhysicsBody>>> tick() {
         return collisionDetector.detect(balls, pipes, filters);
