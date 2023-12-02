@@ -11,35 +11,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Mass {
-
-    /**
-     * 质量类型
-     */
     private MassType type;
-
-    /**
-     * 质心坐标
-     */
+//    质心坐标
     private Vector2 center;
-
-    /**
-     * 质量大小（kg）
-     */
+//    质量
     private double mass;
-
-    /**
-     * 转动惯量
-     */
+//    转动惯量
     private double inertia;
-
-    /**
-     * 质量大小倒数
-     */
+//    质量倒数
     private double InverseMass;
-
-    /**
-     * 转动惯量倒数
-     */
+//    转动惯量倒数
     private double InverseInertia;
 
     public Mass(Vector2 center, double mass, double inertia) {
@@ -57,7 +38,7 @@ public class Mass {
         } else {
             this.InverseInertia = 0.0;
         }
-        // 质量和转动惯量为0就是固定物体
+
         if (mass <= Epsilon.E && inertia <= Epsilon.E) {
             this.type = MassType.INFINITE;
         }

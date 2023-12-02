@@ -8,18 +8,14 @@ import gizmoball.engine.physics.Mass;
 import lombok.Getter;
 import lombok.Setter;
 
+// 圆形
 @Getter
 @Setter
 public class Circle extends AbstractShape {
 
-    /**
-     * 半径
-     */
+
     private double radius;
 
-    /**
-     * 反序列化调用
-     */
     @Deprecated
     public Circle() {
         this(1);

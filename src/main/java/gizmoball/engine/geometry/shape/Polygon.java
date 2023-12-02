@@ -8,18 +8,13 @@ import gizmoball.engine.physics.Mass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+//多边形
 @Getter
 @NoArgsConstructor
 public class Polygon extends AbstractShape {
 
-    /**
-     * 多边形顶点数组
-     */
     protected Vector2[] vertices;
 
-    /**
-     * 多边形法向量数组
-     */
     protected Vector2[] normals;
 
     public Polygon(Transform transform, Vector2[] vertices) {
