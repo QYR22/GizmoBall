@@ -5,13 +5,11 @@ import gizmoball.engine.geometry.Vector2;
 import lombok.Getter;
 import lombok.Setter;
 
+// 三角形
 @Getter
 @Setter
 public class Triangle extends Polygon {
 
-    /**
-     * 反序列化调用
-     */
     @Deprecated
     public Triangle() {
         this(null);

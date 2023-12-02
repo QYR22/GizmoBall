@@ -3,19 +3,12 @@ package gizmoball.engine.collision;
 import gizmoball.engine.geometry.Vector2;
 import lombok.Data;
 
-/**
- * 穿透信息
- */
+//  穿透信息（用于窄碰撞检测）
 @Data
 public class Penetration {
-    /**
-     * 穿透法线，Shape1指向Shape2
-     */
+
     protected Vector2 normal;
 
-    /**
-     * 穿透深度
-     */
     protected double depth;
 
     public Penetration() {

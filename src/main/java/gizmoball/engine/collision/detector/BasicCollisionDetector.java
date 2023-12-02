@@ -15,9 +15,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 非常基础的碰撞探测器，包含碰撞检测和碰撞求解
- */
+//基础碰撞检测器
 public class BasicCollisionDetector implements CollisionDetector {
 
     @Override
@@ -35,17 +33,8 @@ public class BasicCollisionDetector implements CollisionDetector {
         }
         return manifolds;
     }
+//    碰撞检测
 
-    /**
-     * <p>基础的带{@link CollisionFilter}的完整碰撞解析器</p>
-     * <p>含有BroadPhase和NarrowPhase</p>
-     *
-     * @param manifoldSolver 流形求解器
-     * @param body1          物体1
-     * @param body2          物体2
-     * @param filters        碰撞过滤器
-     * @return Manifold
-     */
     private Manifold processDetect(ManifoldSolver manifoldSolver, PhysicsBody body1, PhysicsBody body2, List<CollisionFilter> filters) {
         AbstractShape shape1 = body1.getShape();
         AbstractShape shape2 = body2.getShape();
@@ -86,15 +75,7 @@ public class BasicCollisionDetector implements CollisionDetector {
         }
         return contactConstraints;
     }
-
-    /**
-     * <p>非常基础的本地求解器</p>
-     * <p>处理管线较为简单，分为以下几步：</p>
-     * <p>1. 使用重力和引力更新速度和角速度</p>
-     * <p>2. 求解器为碰撞对更新速度和角速度</p>
-     * <p>3. 使用速度和角速度更新位置</p>
-     * <p>4. 求解器反向施加位置冲量防止内嵌</p>
-     */
+//    碰撞解析
     @Override
     public void LocalSolve(SequentialImpulses solver, Vector2 gravity, List<ContactConstraint> constraints, List<PhysicsBody> bodies) {
         for (PhysicsBody body : bodies) {

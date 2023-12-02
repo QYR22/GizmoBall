@@ -11,55 +11,25 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 碰撞约束
- */
+//碰撞相关的约束信息
 @Data
 @AllArgsConstructor
 public class ContactConstraint {
-    /**
-     * 碰撞物体对
-     */
     private Pair<PhysicsBody, PhysicsBody> pair;
-
-    /**
-     * 接触信息列表
-     */
     private List<SolvableContact> contacts;
-
-    /**
-     * 碰撞法线
-     */
+//    碰撞法线
     private Vector2 normal;
-
-    /**
-     * 碰撞切线
-     */
+//    碰撞切线
     private Vector2 tangent;
-
-    /**
-     * 阻力系数
-     */
+//    阻力系数
     private double friction;
-
-    /**
-     * 回弹系数
-     */
+//    回弹系数
     private double restitution;
-
-    /**
-     * 回弹启动速度
-     */
+//    回弹启动速度
     private double restitutionVelocity;
-
-    /**
-     * 接触面切线速度（用于作用摩擦力）
-     */
+//    切线速度
     private double tangentSpeed;
-
-    /**
-     * 接触信息列表大小
-     */
+//    列表大小
     private int size;
 
     public ContactConstraint(Pair<PhysicsBody, PhysicsBody> pair) {
@@ -71,11 +41,7 @@ public class ContactConstraint {
         this.size = 0;
     }
 
-    /**
-     * 使用{@link Manifold}来更新本{@link ContactConstraint}
-     *
-     * @param manifold /
-     */
+
     public void update(Manifold manifold) {
         PhysicsBody body1 = getBody1();
         PhysicsBody body2 = getBody2();
@@ -107,21 +73,12 @@ public class ContactConstraint {
         this.contacts.addAll(contacts);
         this.size = this.contacts.size();
     }
-
-    /**
-     * 返回碰撞对第一个
-     *
-     * @return PhysicsBody
-     */
+//    碰撞对象1
     public PhysicsBody getBody1() {
         return pair.getKey();
     }
 
-    /**
-     * 返回碰撞对第二个
-     *
-     * @return PhysicsBody
-     */
+//    碰撞对象2
     public PhysicsBody getBody2() {
         return pair.getValue();
     }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// 坐标轴
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,12 +25,6 @@ public class XXYY {
         this.maxY = xxyy.maxY;
     }
 
-    /**
-     * 判断XXYY是否重叠
-     *
-     * @param xxyy XXYY
-     * @return boolean
-     */
     public boolean overlaps(XXYY xxyy) {
         return this.minX <= xxyy.maxX &&
                 this.maxX >= xxyy.minX &&
@@ -37,12 +32,6 @@ public class XXYY {
                 this.maxY >= xxyy.minY;
     }
 
-    /**
-     * 按给定坐标平移
-     *
-     * @param x x轴平移距离
-     * @param y y轴平移距离
-     */
     public void translate(double x, double y) {
         this.minX += x;
         this.minY += y;
@@ -50,10 +39,6 @@ public class XXYY {
         this.maxY += y;
     }
 
-    /**
-     * 按给定{@link Vector2}平移
-     * @param vector2 给定平移{@link Vector2}
-     */
     public void translate(Vector2 vector2) {
         this.translate(vector2.x, vector2.y);
     }
