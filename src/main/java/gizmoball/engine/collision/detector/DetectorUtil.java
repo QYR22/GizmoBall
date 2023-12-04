@@ -2,40 +2,22 @@ package gizmoball.engine.collision.detector;
 
 import gizmoball.engine.collision.Interval;
 import gizmoball.engine.collision.Penetration;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.geometry.shape.*;
 
-/**
- * 碰撞检测工具类
- */
+//碰撞检测工具类
 public class DetectorUtil {
 
-    /**
-     * <p>使用于broadPhase</p>
-     * 判断两个{@link AbstractShape}的AABB是否发生碰撞
-     *
-     * @param shape1 待测图形
-     * @param shape2 待测图形
-     * @return boolean
-     */
-    public static boolean AABBDetect(AbstractShape shape1, AbstractShape shape2) {
-        AABB a = shape1.createAABB();
-        AABB b = shape2.createAABB();
+//    宽碰撞检测
+    public static boolean XXYYDetect(AbstractShape shape1, AbstractShape shape2) {
+        XXYY a = shape1.createXXYY();
+        XXYY b = shape2.createXXYY();
         return a.overlaps(b);
     }
 
-    /**
-     * <p>使用于narrowPhase</p>
-     * 判断两个{@link Circle}是否发生碰撞
-     *
-     * @param circle1     待测圆
-     * @param circle2     待测圆
-     * @param shape       近似图形
-     * @param penetration 穿透信息
-     * @return DetectorResult
-     */
+//    窄碰撞检测
     public static DetectorResult circleDetect(Circle circle1, Circle circle2, AbstractShape shape, Penetration penetration) {
         Transform transform1 = circle1.getTransform();
         Transform transform2 = circle2.getTransform();
@@ -57,16 +39,6 @@ public class DetectorUtil {
         return new DetectorResult(false, shape);
     }
 
-    /**
-     * <p>使用于narrowPhase</p>
-     * 判断{@link QuarterCircle}和{@link Circle}是否发生碰撞
-     *
-     * @param quarterCircle 扇形
-     * @param circle        圆形
-     * @param penetration   穿透信息
-     * @param isFlipped     参数是否发生翻转
-     * @return DetectorResult
-     */
     public static DetectorResult quarterCircleDetect(QuarterCircle quarterCircle, Circle circle, Penetration penetration, boolean isFlipped) {
         Transform transform1 = quarterCircle.getTransform();
         Transform transform2 = circle.getTransform();
@@ -101,16 +73,6 @@ public class DetectorUtil {
         }
     }
 
-    /**
-     * <p>使用于narrowPhase</p>
-     * 使用SAT算法判断两个{@link AbstractShape}是否发生碰撞
-     *
-     * @param shape1      待测图形
-     * @param shape2      待测图形
-     * @param shape       近似图形
-     * @param penetration 穿透信息
-     * @return DetectorResult
-     */
     public static DetectorResult satDetect(AbstractShape shape1, AbstractShape shape2, AbstractShape shape, Penetration penetration) {
         if (shape1 instanceof QuarterCircle && shape2 instanceof QuarterCircle) {
             // 不考虑扇形和扇形的碰撞
@@ -187,7 +149,6 @@ public class DetectorUtil {
                 }
             }
         }
-        // 同上代码
         if (axes2 != null) {
             for (Vector2 axis : axes2) {
                 if (axis.isZero()) continue;

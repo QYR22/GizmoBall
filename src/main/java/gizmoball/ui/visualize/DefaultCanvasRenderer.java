@@ -13,11 +13,10 @@ public class DefaultCanvasRenderer implements CanvasRenderer {
 
     public static final DefaultCanvasRenderer INSTANCE = new DefaultCanvasRenderer();
 
-    private static final Color FILL_COLOR = Color.valueOf("#1296db");
+    private static final Color FILL_COLOR = Color.valueOf("9ac2d6");
 
     private DefaultCanvasRenderer() {
     }
-
     @Override
     public void drawToCanvas(GraphicsContext gc, PhysicsBody physicsBody) {
         AbstractShape shape = physicsBody.getShape();
@@ -29,14 +28,14 @@ public class DefaultCanvasRenderer implements CanvasRenderer {
             gc.setFill(FILL_COLOR);
 
             Vector2[] vertices = polygon.getVertices();
-            double[] xpoints = new double[vertices.length];
-            double[] ypoints = new double[vertices.length];
+            double[] Xs = new double[vertices.length];
+            double[] Ys = new double[vertices.length];
             for (int i = 0; i < vertices.length; i++) {
                 Vector2 transformed = transform.getTransformed(vertices[i]);
-                xpoints[i] = transformed.x;
-                ypoints[i] = transformed.y;
+                Xs[i] = transformed.x;
+                Ys[i] = transformed.y;
             }
-            gc.fillPolygon(xpoints, ypoints, vertices.length);
+            gc.fillPolygon(Xs, Ys, vertices.length);
         } else if (shape instanceof Circle) {
             Circle circle = (Circle) shape;
             gc.setFill(FILL_COLOR);

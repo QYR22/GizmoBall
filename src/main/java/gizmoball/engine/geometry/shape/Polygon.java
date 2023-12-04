@@ -1,25 +1,20 @@
 package gizmoball.engine.geometry.shape;
 
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+//多边形
 @Getter
 @NoArgsConstructor
 public class Polygon extends AbstractShape {
 
-    /**
-     * 多边形顶点数组
-     */
     protected Vector2[] vertices;
 
-    /**
-     * 多边形法向量数组
-     */
     protected Vector2[] normals;
 
     public Polygon(Transform transform, Vector2[] vertices) {
@@ -63,7 +58,7 @@ public class Polygon extends AbstractShape {
     }
 
     @Override
-    public AABB createAABB() {
+    public XXYY createXXYY() {
         Vector2 p = transform.getTransformed(this.vertices[0]);
         double minX = p.x;
         double maxX = p.x;
@@ -77,7 +72,7 @@ public class Polygon extends AbstractShape {
             maxX = Math.max(px, maxX);
             maxY = Math.max(py, maxY);
         }
-        return new AABB(minX, minY, maxX, maxY);
+        return new XXYY(minX, minY, maxX, maxY);
     }
 
     @Override

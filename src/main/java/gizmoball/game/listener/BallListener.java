@@ -20,7 +20,7 @@ public class BallListener implements TickListener {
     private final List<PhysicsBody> balls;
     private final BasicCollisionDetector basicCollisionDetector=new BasicCollisionDetector(){
         private Manifold processDetect(ManifoldSolver manifoldSolver, Ball ball1, Ball ball2) {
-            if (!DetectorUtil.AABBDetect(ball1, ball2)) {
+            if (!DetectorUtil.XXYYDetect(ball1, ball2)) {
                 return null;
             }
 

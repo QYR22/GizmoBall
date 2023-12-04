@@ -6,32 +6,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-/**
- * 物体旋转/位移
- */
+//表示物体的旋转或位移
 @Getter
 @Setter
 @ToString
 public class Transform {
-
-    /**
-     * 旋转角度的cos
-     */
+//    cos(t)的值
     public double cost;
-
-    /**
-     * 旋转角度的sin
-     */
+//    sin(t)的值
     public double sint;
-
-    /**
-     * 相对于原点的x轴偏移，相当于世界的x坐标
-     */
+//    x轴坐标
     public double x;
-
-    /**
-     * 相对于原点的y轴偏移，相当于世界的y坐标
-     */
+//    y轴坐标
     public double y;
 
     public Transform() {
@@ -45,23 +31,10 @@ public class Transform {
         this.y = y;
     }
 
-    /**
-     * 基于本{@link Transform}复制一个新{@link Transform}
-     *
-     * @return Transform
-     */
     public Transform copy() {
         return new Transform(this.cost, this.sint, this.x, this.y);
     }
-
-    /**
-     * 绕着某一点做旋转
-     *
-     * @param c 旋转角度的cos
-     * @param s 旋转角度的sin
-     * @param x 旋转点的x坐标
-     * @param y 旋转点的y坐标
-     */
+//    旋转
     public void rotate(double c, double s, double x, double y) {
         double cosT = this.cost;
         double sinT = this.sint;
@@ -79,62 +52,31 @@ public class Transform {
         this.y = s * cx + c * cy + y;
     }
 
-    /**
-     * 绕着某一点做旋转
-     *
-     * @param theta 旋转角度
-     * @param x     旋转点的x坐标
-     * @param y     旋转点的y坐标
-     */
     public void rotate(double theta, double x, double y) {
         this.rotate(Math.cos(theta), Math.sin(theta), x, y);
     }
-
-    /**
-     * 按给定{@link Vector2}平移
-     *
-     * @param x x轴平移距离
-     * @param y y轴平移距离
-     */
+//    平移
     public void translate(double x, double y) {
         this.x += x;
         this.y += y;
     }
 
-    /**
-     * 按给定{@link Vector2}平移
-     *
-     * @param vector2 方向向量
-     */
     public void translate(Vector2 vector2) {
         this.translate(vector2.x, vector2.y);
     }
 
-    /**
-     * 对给定{@link Vector2}的的x坐标进行变换
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return double
-     */
+//    变换x坐标
     public double getTransformedX(Vector2 vector) {
         return this.cost * vector.x - this.sint * vector.y + this.x;
     }
 
-    /**
-     * 对给定{@link Vector2}的的y坐标进行变换
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return double
-     */
+//    变换y坐标
     public double getTransformedY(Vector2 vector) {
         return this.sint * vector.x + this.cost * vector.y + this.y;
     }
 
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行旋转平移变换
-     *
-     * @param vector 变换{@link Vector2}
-     */
+
+//    旋转+平移
     public void transform(Vector2 vector) {
         double x = vector.x;
         double y = vector.y;
@@ -142,13 +84,7 @@ public class Transform {
         vector.y = this.sint * x + this.cost * y + this.y;
     }
 
-
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行旋转平移变换，返回变换后的新向量
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return Vector2
-     */
+//    进行旋转/平移变换，返回变换后的新向量
     public Vector2 getTransformed(Vector2 vector) {
         Vector2 tv = new Vector2();
         double x = vector.x;
@@ -158,12 +94,6 @@ public class Transform {
         return tv;
     }
 
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行逆旋转平移变换，返回变换后的新向量
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return Vector
-     */
     public Vector2 getInverseTransformed(Vector2 vector) {
         Vector2 tv = new Vector2();
         double tx = vector.x - this.x;
@@ -173,12 +103,6 @@ public class Transform {
         return tv;
     }
 
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行旋转变换，返回变换后的新向量
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return Vector2
-     */
     public Vector2 getTransformedR(Vector2 vector) {
         Vector2 v = new Vector2();
         double x = vector.x;
@@ -188,11 +112,6 @@ public class Transform {
         return v;
     }
 
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行旋转变换
-     *
-     * @param vector 待变换{@link Vector2}
-     */
     public void transformR(Vector2 vector) {
         double x = vector.x;
         double y = vector.y;
@@ -200,13 +119,6 @@ public class Transform {
         vector.y = this.sint * x + this.cost * y;
     }
 
-
-    /**
-     * 对给定{@link Vector2}的的x和y坐标进行旋转逆变换
-     *
-     * @param vector 待变换{@link Vector2}
-     * @return Vector2
-     */
     public Vector2 getInverseTransformedR(Vector2 vector) {
         Vector2 v = new Vector2();
         double x = vector.x;
@@ -217,11 +129,7 @@ public class Transform {
         return v;
     }
 
-    /**
-     * 根据cost,sint获取角度
-     *
-     * @return double
-     */
+//    根据cos和sin数值获取角度
     public double getAngle() {
         double angle = 0;
         if (cost > 0 && sint > 0) {

@@ -1,25 +1,21 @@
 package gizmoball.engine.geometry.shape;
 
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
 import lombok.Getter;
 import lombok.Setter;
 
+// 圆形
 @Getter
 @Setter
 public class Circle extends AbstractShape {
 
-    /**
-     * 半径
-     */
+
     private double radius;
 
-    /**
-     * 反序列化调用
-     */
     @Deprecated
     public Circle() {
         this(1);
@@ -42,8 +38,8 @@ public class Circle extends AbstractShape {
     }
 
     @Override
-    public AABB createAABB() {
-        return new AABB(transform.getX() - radius,
+    public XXYY createXXYY() {
+        return new XXYY(transform.getX() - radius,
                 transform.getY() - radius,
                 transform.getX() + radius,
                 transform.getY() + radius);

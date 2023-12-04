@@ -25,10 +25,7 @@ public class PersistentUtil {
         mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
     }
-
-    /**
-     * 包装List&lt;PhysicsBody&rt;，否则直接反序列化List不会包含PhysicsBody的class信息
-     */
+    /* 包装List PhysicsBody 否则直接反序列化List不会包含PhysicsBody的class信息 */
     private static class Wrapper {
         List<PhysicsBody> bodies;
     }
@@ -49,7 +46,7 @@ public class PersistentUtil {
         try {
             Files.write(file.toPath(), json.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            log.error("write file error", e);
+            log.error("文件写入异常", e);
         }
     }
 

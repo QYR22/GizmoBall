@@ -1,6 +1,5 @@
 package gizmoball.ui.component;
 
-
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
 import gizmoball.game.entity.*;
@@ -14,7 +13,8 @@ import java.util.function.Function;
 
 import static gizmoball.game.GizmoSettings.BLACK_HOLE_BIAS;
 
-/* 所有可拖动组件：球ball、黑洞blackhole、管道pipe、三角形triangle */
+/* 所有可拖动组件：球ball、黑洞blackhole、管道pipe、三角形triangle、挡板flipper */
+// 设置各个物体的属性值
 @Getter
 @Setter
 public class DraggableGizmoComponent extends ImageLabelComponent {
@@ -28,7 +28,6 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
         gizmoPhysicsBody.setRestitutionVelocity(10);
         return gizmoPhysicsBody;
     };
-
 
     protected static final Function<Vector2, GizmoPhysicsBody> circleBodyCreator = (preferredSize) -> {
         ObstacleCircle circle = new ObstacleCircle(preferredSize.x / 2.0);
@@ -75,6 +74,7 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
         gizmoPhysicsBody.setFriction(0.0);
         return gizmoPhysicsBody;
     };
+
     protected static final Function<Vector2, GizmoPhysicsBody> triangleBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
                 new Vector2(-preferredSize.x / 2.0, -preferredSize.y / 2.0),
@@ -92,9 +92,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> leftFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.x, -preferredSize.y/2.0),
-                new Vector2(preferredSize.x , -preferredSize.y/2.0),
-                new Vector2(-preferredSize.x, preferredSize.y  / 2.0)
+                new Vector2(-preferredSize.x, -preferredSize.y / 2.0),
+                new Vector2(preferredSize.x , -preferredSize.y / 2.0),
+                new Vector2(-preferredSize.x, preferredSize.y / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.LEFT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);
@@ -107,9 +107,9 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
 
     protected static final Function<Vector2, GizmoPhysicsBody> rightFlipperBodyCreator = (preferredSize) -> {
         Vector2[] vertices = new Vector2[]{
-                new Vector2(-preferredSize.x , -preferredSize.y  / 2.0),
+                new Vector2(-preferredSize.x , -preferredSize.y / 2.0),
                 new Vector2(preferredSize.x , -preferredSize.y / 2.0),
-                new Vector2(preferredSize.x, preferredSize.y  / 2.0)
+                new Vector2(preferredSize.x, preferredSize.y / 2.0)
         };
         Flipper flipper = new Flipper(vertices, Flipper.Direction.RIGHT);
         GizmoPhysicsBody gizmoPhysicsBody = new GizmoPhysicsBody(flipper);
@@ -120,14 +120,12 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
         return gizmoPhysicsBody;
     };
 
-
     private GizmoType gizmoType;
 
     public DraggableGizmoComponent(String resource, String labelText, GizmoType gizmoType) {
         super(resource, labelText);
         this.gizmoType = gizmoType;
     }
-
 
     @Override
     public VBox createVBox() {
@@ -137,10 +135,7 @@ public class DraggableGizmoComponent extends ImageLabelComponent {
     }
 
     /**
-     * Create a physics body for this gizmo.
-     *
-     * @param preferredSize the preferred size of the gizmo.
-     * @param center        the center of the gizmo.
+     * Create a physics body for this gizmo
      * @return the physics body.
      */
     public GizmoPhysicsBody createPhysicsBody(Vector2 preferredSize, Vector2 center) {

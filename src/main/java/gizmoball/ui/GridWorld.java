@@ -1,6 +1,6 @@
 package gizmoball.ui;
 
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.geometry.shape.Rectangle;
 import gizmoball.engine.physics.Mass;
@@ -21,20 +21,14 @@ import java.util.List;
 
 import static gizmoball.game.GizmoSettings.BOUNDARY_BUFFER;
 
-
 @Getter
 @Slf4j
 public class GridWorld extends GizmoWorld {
 
+    /* 网格边界XXYY */
+    protected XXYY boundaryXXYY;
 
-    /**
-     * 边界AABB
-     */
-    protected AABB boundaryAABB;
-
-    /**
-     * 每个网格中对应的PhysicsBody，一个body（包括三角，圆等）视为占满完整的一格
-     */
+    /* 每个网格中对应的PhysicsBody 一个PhysicsBody e.g.triangle三角、圆、方形、占满完整的一格 */
     protected GizmoPhysicsBody[][] gizmoGridBodies;
 
     protected int gridSize;
@@ -50,24 +44,20 @@ public class GridWorld extends GizmoWorld {
     public GridWorld(Vector2 gravity, int width, int height, int gridSize) {
         super(gravity);
         this.gridSize = gridSize;
-        boundaryAABB = new AABB(0, 0, width, height);
+        boundaryXXYY = new XXYY(0, 0, width, height);
         gizmoGridBodies = new GizmoPhysicsBody[(int) (width / gridSize)][(int) (height / gridSize)];
         initBoundary();
     }
 
-    /**
-     * <p>以右手系坐标，获取某个点对应的格子的下标</p>
-     * <p>x : [0, GRID_SIZE)对应下标0</p>
-     *
-     * @param x 右手系坐标x
-     * @param y 右手系坐标y
-     * @return 如果超出格子范围，返回null，否则返回格子下标长度为2的数组[i, j]，对应gizmoGridBodies[i][j]
+    /** xxx 获取某个点对应的格子的下标
+     * x : [0, GRID_SIZE)对应下标0
+     * @return 如果超出格子范围，返回null; 范围内，则返回格子下标长度为2的数组[i, j]，对应gizmoGridBodies[i][j]
      */
     public int[] getGridIndex(double x, double y) {
         x = Precision.round(x, 10);
         y = Precision.round(y, 10);
-        if (x < boundaryAABB.minX || x > boundaryAABB.maxX
-                || y < boundaryAABB.minY || y > boundaryAABB.maxY) {
+        if (x < boundaryXXYY.minX || x > boundaryXXYY.maxX
+                || y < boundaryXXYY.minY || y > boundaryXXYY.maxY) {
             return null;
         }
         int[] index = new int[2];
@@ -76,17 +66,14 @@ public class GridWorld extends GizmoWorld {
         return index;
     }
 
-    /**
-     * @see #getGridIndex(double, double)
-     */
     private int[] getGridIndex(Vector2 position) {
         return getGridIndex(position.x, position.y);
     }
 
-    public void setGrid(AABB aabb, GizmoPhysicsBody body) {
-        int[] bottomLeft = getGridIndex(aabb.getMinX(), aabb.getMinY());
-        int width = (int) Math.ceil((aabb.getMaxX() - aabb.getMinX()) / gridSize);
-        int height = (int) Math.ceil((aabb.getMaxY() - aabb.getMinY()) / gridSize);
+    public void setGrid(XXYY xxyy, GizmoPhysicsBody body) {
+        int[] bottomLeft = getGridIndex(xxyy.getMinX(), xxyy.getMinY());
+        int width = (int) Math.ceil((xxyy.getMaxX() - xxyy.getMinX()) / gridSize);
+        int height = (int) Math.ceil((xxyy.getMaxY() - xxyy.getMinY()) / gridSize);
 
         for (int i = bottomLeft[0]; i < bottomLeft[0] + width; i++) {
             for (int j = bottomLeft[1]; j < bottomLeft[1] + height; j++) {
@@ -94,25 +81,18 @@ public class GridWorld extends GizmoWorld {
             }
         }
     }
-
-    /**
-     * <p>检查AABB所在范围的格子是否已经有物体</p>
-     * <p>同时会检查是否越界</p>
-     *
-     * @param aabb /
-     * @return /
-     */
-    public boolean checkOverlay(AABB aabb, PhysicsBody body) {
-        int[] bottomLeft = getGridIndex(aabb.getMinX(), aabb.getMinY());
+    /* xxx 检查`XXYY`指定范围的格子是否已被占用 同时会检查是否越界 */
+    public boolean checkOverlay(XXYY xxyy, PhysicsBody body) {
+        int[] bottomLeft = getGridIndex(xxyy.getMinX(), xxyy.getMinY());
         if (bottomLeft == null) {
             return true;
         }
-        int[] topRight = getGridIndex(aabb.getMaxX(), aabb.getMaxY());
+        int[] topRight = getGridIndex(xxyy.getMaxX(), xxyy.getMaxY());
         if (topRight == null) {
             return true;
         }
-        int width = (int) Math.ceil((aabb.getMaxX() - aabb.getMinX()) / gridSize);
-        int height = (int) Math.ceil((aabb.getMaxY() - aabb.getMinY()) / gridSize);
+        int width = (int) Math.ceil((xxyy.getMaxX() - xxyy.getMinX()) / gridSize);
+        int height = (int) Math.ceil((xxyy.getMaxY() - xxyy.getMinY()) / gridSize);
 
         for (int i = bottomLeft[0]; i < bottomLeft[0] + width; i++) {
             for (int j = bottomLeft[1]; j < bottomLeft[1] + height; j++) {
@@ -125,16 +105,15 @@ public class GridWorld extends GizmoWorld {
     }
 
     public void initBoundary() {
-        double worldWidth = boundaryAABB.maxX;
-        double worldHeight = boundaryAABB.maxY;
-        // init border
-        // bottom
+        double worldWidth = boundaryXXYY.maxX;
+        double worldHeight = boundaryXXYY.maxY;
+        // 下
         createBoundary(worldWidth / 2 + BOUNDARY_BUFFER, worldHeight / 2, worldWidth / 2, -worldHeight / 2);
-        // top
+        // 上
         createBoundary(worldWidth / 2 + BOUNDARY_BUFFER, worldHeight / 2, worldWidth / 2 + BOUNDARY_BUFFER, worldHeight + worldHeight / 2);
-        // left
+        // 左
         createBoundary(worldWidth / 2, worldHeight / 2, -worldWidth / 2, worldHeight / 2);
-        // right
+        // 右
         createBoundary(worldWidth / 2, worldHeight / 2, worldWidth + worldWidth / 2, worldHeight / 2);
     }
 
@@ -150,7 +129,6 @@ public class GridWorld extends GizmoWorld {
         super.addBody(border);
     }
 
-
     public void addBodyToGrid(PhysicsBody body) {
         if (body instanceof GizmoPhysicsBody) {
             this.addBody((GizmoPhysicsBody) body);
@@ -159,26 +137,23 @@ public class GridWorld extends GizmoWorld {
 
     @Override
     public void addBody(GizmoPhysicsBody body) {
-        AABB aabb = body.getShape().createAABB();
-        GeometryUtil.padToSquare(aabb);
-        if (checkOverlay(aabb, body)) {
+        XXYY xxyy = body.getShape().createXXYY();
+        GeometryUtil.padToSquare(xxyy);
+        if (checkOverlay(xxyy, body)) {
             throw new IllegalArgumentException("物件重叠");
         }
-
         super.addBody(body);
-        setGrid(aabb, body);
+        setGrid(xxyy, body);
     }
 
     @Override
     public void removeBody(GizmoPhysicsBody body) {
         super.removeBody(body);
     }
-
+    // 清除 将所有格子中对象置空
     @Override
     public void removeAllBodies() {
         super.removeAllBodies();
-
-        // 从格子中移除
         for (GizmoPhysicsBody[] gizmoGridBody : this.gizmoGridBodies) {
             Arrays.fill(gizmoGridBody, null);
         }
@@ -186,9 +161,7 @@ public class GridWorld extends GizmoWorld {
 
     private String snapshot;
 
-    /**
-     * <p>获取当前世界的物体快照到默认文件".snapshot.json"</p>
-     *
+    /** 获取当前世界的物体快照到默认文件".snapshot.json"
      * @return json格式的字符串表示每一个物体
      */
     public String snapshot() {
@@ -196,58 +169,48 @@ public class GridWorld extends GizmoWorld {
     }
 
     /**
-     * <p>获取当前世界的物体快照到指定文件</p>
-     *
-     * @param file 指定文件
+     * 获取当前世界的物体快照到指定文件
      * @return json格式的字符串表示每一个物体
      */
     public String snapshot(File file) {
         try {
-            log.info("保存快照中...");
+            log.info("快照.snapshot.json正在保存，wait for a minute.");
             List<PhysicsBody> bodiesToJson = new ArrayList<>();
             bodyTypeMap.forEach((k, v) -> {
                 if (k != GizmoType.BOUNDARY) {
                     bodiesToJson.addAll(v);
                 }
             });
-
+            // 将每个物体对象转换为json数据格式写入`.snapshot.json`中
             snapshot = PersistentUtil.toJsonString(bodiesToJson);
             log.debug("take snapshot: {}", snapshot);
-
             PersistentUtil.write(snapshot, file);
-            log.info("已保存{}个物体的快照", bodiesToJson.size());
+            log.info("已保存{}个物体对象信息到快照文件中。", bodiesToJson.size());
         } catch (Exception e) {
             log.error("snapshot error", e);
         }
         return snapshot;
     }
 
-    /**
-     * @see #restore(String)
-     */
     public void restore() throws RuntimeException {
         restore(snapshot);
     }
 
-    /**
-     * <p>恢复世界的物体</p>
-     *
-     * @param snapshot snapshot获取的json字符串
-     */
+    /* 恢复世界的物体 从`.snapshot.json`中获取json字符串 */
     public void restore(String snapshot) throws RuntimeException {
         try {
-            log.info("恢复快照中...");
-
-            List<PhysicsBody> o = PersistentUtil.fromJsonString(snapshot);
+            log.info("读取`.snapshot.json`加载ing");
+            // json数据 <-> object 转换
+            List<PhysicsBody> obj = PersistentUtil.fromJsonString(snapshot);
             removeAllBodies();
             initBoundary();
-            o.forEach(this::addBodyToGrid);
+            // 所有对象在格子上显示
+            obj.forEach(this::addBodyToGrid);
 
-            log.info("成功加载{}个物体", o.size());
+            log.info("成功从`.snapshot.json`中加载{}个物体", obj.size());
         } catch (IOException e) {
             log.error("restore error", e);
             throw new RuntimeException(e);
-
         }
     }
 
@@ -259,11 +222,11 @@ public class GridWorld extends GizmoWorld {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void tick() throws RuntimeException{
         super.tick();
         int ballSize = bodyTypeMap.get(GizmoType.BALL).size();
+        // 没有放球游戏不开始。
         if (ballSize == 0) {
             throw new RuntimeException("游戏结束");
         }

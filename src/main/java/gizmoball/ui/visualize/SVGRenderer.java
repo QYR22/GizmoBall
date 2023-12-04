@@ -1,15 +1,14 @@
 package gizmoball.ui.visualize;
 
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.shape.AbstractShape;
 import gizmoball.engine.physics.PhysicsBody;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Affine;
 
-/**
- * <p><b>仅支持只包含path节点的svg，svg不能被格式化</b></p>
- * <p>因为{@link javafx.scene.image.Image}不支持SVG，所以没有继承{@link ImageRenderer}</p>
+/* 仅支持只包含path节点的svg，svg不能被格式化
+   `javafx.scene.image.Image`不支持SVG
  */
 public class SVGRenderer implements CanvasRenderer {
 
@@ -24,17 +23,17 @@ public class SVGRenderer implements CanvasRenderer {
         AbstractShape shape = body.getShape();
         Transform transform = shape.getTransform();
 
-        AABB aabb = body.getShape().createAABB();
-        double shapeHeight = aabb.maxY - aabb.minY;
-        double shapeWidth = aabb.maxX - aabb.minX;
+        XXYY xxyy = body.getShape().createXXYY();
+        double shapeHeight = xxyy.maxY - xxyy.minY;
+        double shapeWidth = xxyy.maxX - xxyy.minX;
 
         if (svgNode != null) {
             gc.save();
 
             Affine affine = new Affine();
-            affine.appendRotation(transform.getAngle(), transform.x, transform.y); // TODO center
+            affine.appendRotation(transform.getAngle(), transform.x, transform.y);
             affine.appendTranslation(transform.getX() - shapeWidth / 2,
-                    transform.getY() - shapeHeight / 2 + shapeHeight); // +shapeHeight为了处理图片上下翻转
+                    transform.getY() - shapeHeight / 2 + shapeHeight);
             affine.appendScale(shapeHeight / 1024, -shapeWidth / 1024);
             gc.transform(affine);
 
@@ -46,7 +45,6 @@ public class SVGRenderer implements CanvasRenderer {
                 gc.fill();
                 gc.closePath();
             }
-
             gc.restore();
         }
     }

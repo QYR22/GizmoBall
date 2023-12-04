@@ -46,13 +46,13 @@
 ### 引擎层
 **AbstractWorld**：**AbstractWorld**代表了弹球游戏中所有物体(PhysicsBody)所处的“世界”。这个“世界”中包含了所有物体信息，以及处理碰撞需要的类。可以向这个世界中添加物体、删除物体、获取存在的物体，以及通过tick方法让这个“世界”运行起来。  
 **PhysicsBody**：代表游戏中的一个物理实体（球、墙壁、挡板等都属于PhysicsBody），受到物理规则的影响。包含基本的物理属性：质量、速度、受力等，可以根据自身受力、速度信息计算出新的速度以及位置，以及这个物理实体的基础形状(AbstractShape)。  
-**AbstractShape**：代表一种抽象的形状，可以是圆形(Circle)、多边形(Polygon)（具体到三角形(Triangle)、矩形(Rectangle)）、半圆(QuarterCircle)等。一个形状可以计算自身的**AABB**，在某个向量上的投影等信息。在实际游戏中，我们假设需要的形状都是凸形(Convex)，所以实现了**Convex**接口。  
+**AbstractShape**：代表一种抽象的形状，可以是圆形(Circle)、多边形(Polygon)（具体到三角形(Triangle)、矩形(Rectangle)）、半圆(QuarterCircle)等。一个形状可以计算自身的**XXYY**，在某个向量上的投影等信息。在实际游戏中，我们假设需要的形状都是凸形(Convex)，所以实现了**Convex**接口。  
 **Convex**：凸形接口，接口方法包含了凸形共通的可以计算的信息如，分离轴，焦点，碰撞特征等。  
 #### 碰撞检测相关
 **CollisionDetector**：负责碰撞检测接口，包含了碰撞检测需要的基础方法，对所有物体进行碰撞检测。因为具体的碰撞检测可能很复杂，实现的复杂程度和检测效率都有所不同，所以采用接口表示。   
 **BasicCollisionDetector**：基础的碰撞检测实现类。在经过**CollisionFilter**过滤接受碰撞的物体之后，借助**DetectorUtil**工具类实现对所有物体的碰撞检测并获取碰撞的穿透信息(Penetration)后通过**ManifoldSolver**获取碰撞信息用于解决碰撞。  
 **CollisionFilter**：判断两个**PhysicsBody**是否接受碰撞检测的过滤器接口。  
-**DetectorUtil**：碰撞检测工具类，可以检测一些基础的碰撞，**AABB**是否重叠等。  
+**DetectorUtil**：碰撞检测工具类，可以检测一些基础的碰撞，**XXYY**是否重叠等。  
 **ManifoldSolver**：根据物体的穿透信息获取碰撞的**Manofold**信息。  
 **SequentialImpulses**：在获取碰撞相关的信息之后，根据碰撞的信息更新物体的位置、速度等。  
 

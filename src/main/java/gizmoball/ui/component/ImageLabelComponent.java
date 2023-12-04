@@ -9,14 +9,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class ImageLabelComponent {
 
     private Image image;
 
     private String labelText;
-
-    //----------javafx控件相关----------
 
     private double imageWidth;
 
@@ -26,11 +26,10 @@ public class ImageLabelComponent {
 
     private ImageView imageView;
 
-    /**
-     * 由于SVG图片点击透明处无效，包装ImageView，添加事件监听器。
-     */
+    /* 因为SVG图片虽然是200*200，但并不是全占满的，点击透明处无效。
+    为了点击方格都能选中该物件 解决方法：包装ImageView，添加事件监听器。 */
     private Pane imageWrapper;
-
+    // 对应的标签(文字信息
     private Label label;
 
     public ImageLabelComponent(String resource, String labelText) {
@@ -38,7 +37,7 @@ public class ImageLabelComponent {
     }
 
     public ImageLabelComponent(String resource, String labelText, int imageWidth, int imageHeight) {
-        this.image = new Image(getClass().getClassLoader().getResourceAsStream(resource),
+        this.image = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(resource)),
                 imageWidth, imageHeight, true, true);
         this.labelText = labelText;
         this.imageWidth = imageWidth;
@@ -51,7 +50,6 @@ public class ImageLabelComponent {
         this.imageWidth = image.getWidth();
         this.imageHeight = image.getHeight();
     }
-
 
     public VBox createVBox() {
         vBox = new VBox();

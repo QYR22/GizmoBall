@@ -1,30 +1,22 @@
 package gizmoball.engine.geometry.shape;
 
 import gizmoball.engine.collision.Interval;
-import gizmoball.engine.geometry.AABB;
+import gizmoball.engine.geometry.XXYY;
 import gizmoball.engine.geometry.Transform;
 import gizmoball.engine.geometry.Vector2;
 import gizmoball.engine.physics.Mass;
 import lombok.Getter;
 import lombok.Setter;
 
+// 1/4圆
 @Getter
 @Setter
 public class QuarterCircle extends AbstractShape {
 
-    /**
-     * 半径
-     */
     private double radius;
 
-    /**
-     * 顶点数组
-     */
     private Vector2[] vertices;
 
-    /**
-     * 反序列化调用
-     */
     @Deprecated
     public QuarterCircle() {
         this(1);
@@ -65,8 +57,8 @@ public class QuarterCircle extends AbstractShape {
     }
 
     @Override
-    public AABB createAABB() {
-        return new Rectangle(this.radius / 2, this.radius / 2, this.transform.copy()).createAABB();
+    public XXYY createXXYY() {
+        return new Rectangle(this.radius / 2, this.radius / 2, this.transform.copy()).createXXYY();
     }
 
     @Override

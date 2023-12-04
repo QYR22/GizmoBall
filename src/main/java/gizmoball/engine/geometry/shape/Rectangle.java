@@ -6,18 +6,13 @@ import gizmoball.engine.geometry.Vector2;
 import lombok.Getter;
 import lombok.Setter;
 
+//矩形
 @Getter
 @Setter
 public class Rectangle extends Polygon {
 
-    /**
-     * 矩形的半宽
-     */
     protected double halfWidth;
 
-    /**
-     * 矩形的半高
-     */
     protected double halfHeight;
 
     private Rectangle(double halfWidth, double halfHeight, Vector2[] vertices, Transform transform) {
@@ -45,9 +40,6 @@ public class Rectangle extends Polygon {
         this(halfWidth, halfHeight, new Transform());
     }
 
-    /**
-     * 反序列化调用
-     */
     @Deprecated
     public Rectangle() {
         this(0.0, 0.0);
